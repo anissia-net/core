@@ -1,10 +1,10 @@
 package anissia.infrastructure
 
+//import org.springframework.cloud.client.discovery.EnableDiscoveryClient
 import anissia.infrastructure.common.As
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-//import org.springframework.cloud.client.discovery.EnableDiscoveryClient
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.web.reactive.config.EnableWebFlux
 

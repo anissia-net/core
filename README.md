@@ -3,25 +3,40 @@
 - 주소 : [anissia.net](https://anissia.net)
 
 ## 개발환경
-* Kotlin (JDK 23)
-  * **[Elastic Search](https://www.elastic.co)** (설치필요)
-    <br/>도커 설치시 예시
-    ```
-    # 엘라스틱서치
-    docker run -d --name elasticsearch -p 9200:9200 --restart=always -e "xpack.security.enabled=false" -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:8.17.1
-      # 애플 실리콘에서는 arm64 버전과함게 CLI_JAVA_OPTS=-XX:UseSVE=0, ES_JAVA_OPTS=-XX:UseSVE=0 옵션을 줘야한다.
-        - https://discuss.elastic.co/t/issue-with-elasticsearch-docker-deployment-on-apple-silicon-m4-processor-macos-15-2/373214
-        - https://github.com/elastic/elasticsearch/issues/118583#issuecomment-2546897726
-      # 볼륨 /Users/anissia/db/elasticsearch1 에 연동해서 애플 실리콘에서 설치할 경우
-      docker run -d --name elasticsearch -p 9200:9200 --restart=always -e 'CLI_JAVA_OPTS=-XX:UseSVE=0' -e 'ES_JAVA_OPTS=-XX:UseSVE=0' -e 'xpack.security.enabled=false' -e 'discovery.type=single-node' -v /Users/anissia/db/elasticsearch1:/usr/share/elasticsearch/data docker.elastic.co/elasticsearch/elasticsearch:8.17.1-arm64
-    ```
-* **[Maria DB](https://mariadb.org)** (설치필요)
-  <br/>도커 설치시 예시
+- JDK 23 / Kotlin
+- [Elastic Search](https://www.elastic.co)
   ```
-  docker run -d --name mariadb -p 3306:3306 --restart=always -e MYSQL_ROOT_PASSWORD=root mariadb
+  # 도커 설치 예제 (8 버전)
+  # 엘라스틱서치는 버전 호환성이 좋지 않아 메이저 버전 유의
+  
+  # x86_64
+  docker run -d --name elasticsearch -p 9200:9200 \
+  -e 'xpack.security.enabled=false' -e 'discovery.type=single-node' \
+  -v 로컬볼륨:/usr/share/elasticsearch/data \
+  docker.elastic.co/elasticsearch/elasticsearch:8.17.4
+  
+  # arm (mac)
+  docker run -d --name elasticsearch -p 9200:9200 \
+  -e 'CLI_JAVA_OPTS=-XX:UseSVE=0' -e 'ES_JAVA_OPTS=-XX:UseSVE=0' \
+  -e 'xpack.security.enabled=false' -e 'discovery.type=single-node' \
+  -v 로컬볼륨:/usr/share/elasticsearch/data \
+  docker.elastic.co/elasticsearch/elasticsearch:8.17.4-arm64
   ```
-  공통 (anissia db 생성 후 anissia / anissia 계정 생성 필요)
+- [Maria DB](https://mariadb.org)
   ```
+  # 도커 설치 예제
+  
+  # 마리아 DB
+  docker run -d --name mariadb -p 3306:3306 \
+  -e MYSQL_ROOT_PASSWORD=root \
+  -v 유저볼륨설정:/etc/mysql/conf.d \
+  -v 유저볼륨데이터:/var/lib/mysql:Z \
+  mariadb
+  
+  # 접속
+  docker exec -it mariadb /bin/mariadb -u root -proot
+  
+  # DB 생성
   CREATE DATABASE anissia;
   CREATE USER 'anissia'@'%' IDENTIFIED BY 'anissia';
   GRANT ALL PRIVILEGES ON * . * TO 'anissia'@'%';
@@ -30,34 +45,19 @@
 
 ## 실행
 각 IDE에서 실행하거나 직접 gradle wrapper를 이용하여 실행
-
-### 실행/빌드 명령어
 ```
-# 로컬 실행
+# 프로파일별 실행
 gradlew bootRun -Dspring.profiles.active=local
-
-# 개발 실행
 gradlew bootRun -Dspring.profiles.active=dev
-
-# 운영 실행
 gradlew bootRun -Dspring.profiles.active=prod
 
-# 빌드
+# 빌드 / 실행
 gradlew build
-
-# 실행
 java -jar anissia-core-1.0.jar --spring.profiles.active=prod
 ```
 
-### 기타
-- gradlew update
-```
-./gradlew wrapper --gradle-version latest --distribution-type all
-```
-
 ### 로컬 기본 데이터 생성
-- http://localhost:8080/install (다시 작성할 예정)
-
+- http://localhost:8080/install (예정)
 
 ## 참고 
 * [애니시아 문서](https://github.com/anissia-net/document)

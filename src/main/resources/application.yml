@@ -1,0 +1,24 @@
+spring:
+  profiles:
+    active: local
+  jpa:
+    properties.hibernate:
+      jdbc.batch_size: 4
+      timezone.default_storage: NORMALIZE
+    hibernate:
+      ddl-auto: none
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+    open-in-view: true
+  data.elasticsearch.repositories.enabled: false
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+
+google.analytics.id: G-Z38PT7F09M
+
+server:
+  port: 8080
+  forward-headers-strategy: native
+
+
+

@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service
 
 @Service
 class ElasticsearchService(
-    @Value("\${anissia.ndb.url}")
+    @Value("\${elasticsearch.url}")
     private val url: String,
-    @Value("\${anissia.ndb.username}")
+    @Value("\${elasticsearch.username}")
     private val username: String,
-    @Value("\${anissia.ndb.password}")
+    @Value("\${elasticsearch.password}")
     private val password: String,
 ) {
     private val credentialsProvider = BasicCredentialsProvider()

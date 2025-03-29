@@ -1,32 +1,13 @@
 env: prod
 host: https://anissia.net
-google.analytics.id: G-Z38PT7F09M
 
-server:
-  port: 8080
-  forward-headers-strategy: native
+spring.datasource:
+  url: jdbc:mariadb://localhost:3306/anissia
+  username: anissia
+  password: anissia
 
-anissia:
-  rdb:
-    driverClassName: org.mariadb.jdbc.Driver
-    jdbcUrl: jdbc:mariadb://localhost:3306/anissia
-    username: anissia
-    password: anissia
-  ndb:
-    url: http://localhost:9200
-    username: elastic
-    password: elastic
+elasticsearch:
+  url: http://localhost:9200
+  username: elastic
+  password: elastic
 
-spring:
-  jpa:
-    database-platform: org.hibernate.dialect.MariaDBDialect
-    properties.hibernate:
-      jdbc.batch_size: 4
-      dialect: org.hibernate.dialect.MariaDBDialect
-      timezone.default_storage: NORMALIZE
-    hibernate:
-      ddl-auto: none
-      naming:
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
-    open-in-view: true
-  data.elasticsearch.repositories.enabled: false

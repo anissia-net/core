@@ -13,7 +13,7 @@ class Store (
     var cv: String = "", // code value : simple value
 
     @Lob
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition="LONGTEXT")
     var data: String = "" // long value
 ) {
 
