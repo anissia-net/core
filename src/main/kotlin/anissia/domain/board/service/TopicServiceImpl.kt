@@ -1,5 +1,6 @@
 package anissia.domain.board.service
 
+import anissia.domain.account.service.UserService
 import anissia.domain.activePanel.ActivePanel
 import anissia.domain.activePanel.repository.ActivePanelRepository
 import anissia.domain.board.BoardPost
@@ -23,6 +24,7 @@ class TopicServiceImpl(
     private val boardPostRepository: BoardPostRepository,
     private val boardTickerRepository: BoardTickerRepository,
     private val activePanelRepository: ActivePanelRepository,
+    private val userService: UserService,
 ): TopicService {
     override fun get(cmd: GetTopicCommand): BoardTopicItem =
         boardTopicRepository
@@ -50,9 +52,7 @@ class TopicServiceImpl(
 
     @Transactional
     override fun add(cmd: NewTopicCommand, sessionItem: SessionItem): ResultWrapper<Long> {
-        if (!sessionItem.isLogin) {
-            return ResultWrapper.fail("로그인이 필요합니다.", 0)
-        }
+        userService.validateCriticalSession(sessionItem)
 
         return cmd.ticker
             .takeIf { permission(it, sessionItem) }

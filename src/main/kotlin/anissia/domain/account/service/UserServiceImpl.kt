@@ -14,6 +14,7 @@ import anissia.domain.anime.repository.AnimeCaptionRepository
 import anissia.domain.anime.service.AnimeDocumentService
 import anissia.domain.session.model.SessionItem
 import anissia.domain.translator.service.TranslatorApplyService
+import anissia.infrastructure.common.As
 import anissia.infrastructure.service.BCryptService
 import anissia.shared.ResultWrapper
 import gs.shared.FailException
@@ -35,6 +36,7 @@ class UserServiceImpl(
 ): UserService {
 
     val codeUpdateName = "AC-UPD-NAME"
+    val sessionException = FailException("세션정보가 만료되었습니다.\n다시 로그인해주세요.")
 
     override fun get(sessionItem: SessionItem): AccountUserItem =
         AccountUserItem.cast(accountRepository.findWithRolesByAn(sessionItem.an)!!)
@@ -53,7 +55,13 @@ class UserServiceImpl(
     }
 
     override fun validateCriticalSession(sessionItem: SessionItem) {
-        sessionItem.validateSession(accountRepository.findWithRolesByAn(sessionItem.an))
+        sessionItem.validateLogin()
+        accountRepository.findWithRolesByAn(sessionItem.an)?.takeIf { account ->
+            !account.isBan &&
+                account.name == sessionItem.name &&
+                account.email == sessionItem.email &&
+                As.same(account.roles.map { it.name }, sessionItem.roles)
+        } ?: throw sessionException
     }
 
     @Transactional

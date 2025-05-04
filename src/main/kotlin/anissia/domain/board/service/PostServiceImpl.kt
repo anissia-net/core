@@ -1,5 +1,6 @@
 package anissia.domain.board.service
 
+import anissia.domain.account.service.UserService
 import anissia.domain.activePanel.ActivePanel
 import anissia.domain.activePanel.repository.ActivePanelRepository
 import anissia.domain.board.BoardPost
@@ -21,12 +22,14 @@ class PostServiceImpl(
     private val boardTopicRepository: BoardTopicRepository,
     private val activePanelRepository: ActivePanelRepository,
     private val boardTickerRepository: BoardTickerRepository,
+    private val userService: UserService,
 ): PostService {
 
     @Transactional
     override fun add(cmd: NewPostCommand, sessionItem: SessionItem): ResultWrapper<Unit> {
         cmd.validate()
         sessionItem.validateLogin()
+        userService.validateCriticalSession(sessionItem)
 
         return boardTopicRepository
             .findByIdOrNull(cmd.topicNo)

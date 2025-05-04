@@ -71,7 +71,6 @@ class LoginServiceImpl(
 
                         return getAuthInfo(GetJwtAuthInfoCommand(sessionItem = SessionItem.cast(account, ip), makeLoginToken = true))
                     }
-
             }
 
         loginFailRepository.save(LoginFail.create(ip = ip, email = "#${cmd.tn}"))
