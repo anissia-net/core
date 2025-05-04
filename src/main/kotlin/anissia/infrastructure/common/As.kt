@@ -101,5 +101,20 @@ class As {
         fun encodeBase64Url(value: String): String = EN_BASE64_URL.encodeToString(value.toByteArray(Charsets.UTF_8))
 
         fun decodeBase64Url(value: String): String = DE_BASE64_URL.decode(value).toString(Charsets.UTF_8)
+
+        fun <T> same(a: List<T>, b: List<T>): Boolean {
+            if (a.count() == b.count()) {
+                if (a.count() == 0) { return true }
+                else {
+                    val aa = a.stream().sorted().toList()
+                    val bb = b.stream().sorted().toList()
+                    for (i in 0 until a.count()) {
+                        if (aa[i] != bb[i]) { return false }
+                    }
+                    return true
+                }
+            }
+            return false
+        }
     }
 }

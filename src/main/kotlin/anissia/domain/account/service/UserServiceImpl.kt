@@ -52,6 +52,10 @@ class UserServiceImpl(
         return ResultWrapper.ok()
     }
 
+    override fun validateCriticalSession(sessionItem: SessionItem) {
+        sessionItem.validateSession(accountRepository.findWithRolesByAn(sessionItem.an))
+    }
+
     @Transactional
     override fun editName(cmd: EditUserNameCommand, sessionItem: SessionItem): ResultWrapper<Unit> {
         cmd.validate()

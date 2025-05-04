@@ -14,6 +14,8 @@ class SessionItem (
         val ip: String = "",
 ) {
     companion object {
+        val sessionException = FailException("세션정보가 만료되었습니다.\n다시 로그인해주세요.")
+
         fun cast(account: Account, ip: String): SessionItem {
             if (account.isBan) {
                 throw FailException("차단된 계정입니다.\n해제일 ${account.banExpireDt!!.format(As.DTF_USER_YMDHMS)}")
@@ -38,6 +40,16 @@ class SessionItem (
 
     fun validateRoot() {
         if (!isRoot) throw FailException("권한이 없습니다.")
+    }
+
+    fun validateSession(account: Account?) {
+        validateLogin()
+        account?.takeIf { account ->
+            !account.isBan &&
+                account.name == this.name &&
+                account.email == this.email &&
+                As.same(account.roles.map { it.name }, this.roles)
+        } ?: throw sessionException
     }
 
     @get:JsonIgnore

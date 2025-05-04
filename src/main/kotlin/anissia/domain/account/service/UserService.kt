@@ -10,4 +10,5 @@ interface UserService {
     fun get(sessionItem: SessionItem): AccountUserItem
     fun editName(cmd: EditUserNameCommand, sessionItem: SessionItem): ResultWrapper<Unit>
     fun editPassword(cmd: EditUserPasswordCommand, sessionItem: SessionItem): ResultWrapper<Unit>
+    fun validateCriticalSession(sessionItem: SessionItem)
 }
