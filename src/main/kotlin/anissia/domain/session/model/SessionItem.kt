@@ -2,6 +2,7 @@ package anissia.domain.session.model
 
 import anissia.domain.account.Account
 import anissia.domain.account.AccountRole
+import anissia.infrastructure.common.As
 import com.fasterxml.jackson.annotation.JsonIgnore
 import gs.shared.FailException
 
@@ -13,13 +14,18 @@ class SessionItem (
         val ip: String = "",
 ) {
     companion object {
-        fun cast(account: Account, ip: String) = SessionItem(
-            an = account.an,
-            name = account.name,
-            email = account.email,
-            roles = account.roles.map { it.name },
-            ip = ip
-        )
+        fun cast(account: Account, ip: String): SessionItem {
+            if (account.isBan) {
+                throw FailException("차단된 계정입니다.\n해제일 ${account.banExpireDt!!.format(As.DTF_USER_YMDHMS)}")
+            }
+            return SessionItem(
+                an = account.an,
+                name = account.name,
+                email = account.email,
+                roles = account.roles.map { it.name },
+                ip = ip
+            )
+        }
     }
 
     fun validateLogin() {

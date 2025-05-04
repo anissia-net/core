@@ -41,7 +41,7 @@ class Account (
     @Column(name = "role", nullable = false, length = 10)
     val roles: MutableSet<AccountRole> = mutableSetOf(),
 ) {
-    val isBan: Boolean get() = lastLoginDt.isAfter(OffsetDateTime.now())
+    val isBan: Boolean get() = banExpireDt?.isAfter(OffsetDateTime.now()) == true
     val isAdmin: Boolean get() = roles.any { it == AccountRole.TRANSLATOR || it == AccountRole.ROOT }
     val isTranslator: Boolean get() = roles.any { it == AccountRole.TRANSLATOR }
 }
