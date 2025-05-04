@@ -10,6 +10,7 @@ import anissia.domain.session.model.SessionItem
 import anissia.shared.ResultWrapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.OffsetDateTime
 
 @Service
 class ActivePanelCommandServiceImpl(
@@ -42,6 +43,31 @@ class ActivePanelCommandServiceImpl(
                     } else {
                         return ResultWrapper.fail("${user.name}님은 자막제작자 권한을 가지고 있지 않습니다.")
                     }
+                }
+                cmd.query.startsWith("/차단 ") -> {
+                    // /차단 홍길동 320 광고글 작성
+                    val q = cmd.query.trim().split(Regex("\\s+"))
+                    if (q.size < 4) {
+                        return ResultWrapper.fail("포멧에 맞게 작성해주세요.\nex) /차단 홍길동 320 광고글 작성")
+                    }
+                    val name = q[1]
+                    val day = try { q[2].toInt() } catch (_: Exception) { -1 }
+                    val text = q.drop(3).joinToString(" ").trim()
+
+                    val user = accountRepository.findByName(name)
+                        ?: return ResultWrapper.fail("${name}는 존재하지 않는 유저 입니다.")
+
+                    if (day !in 0..999) {
+                        return ResultWrapper.fail("차단일은 0~999일 사이로 입력해주세요.")
+                    }
+
+                    if (text.isBlank()) {
+                        return ResultWrapper.fail("사유를 작성해주세요.")
+                    }
+
+                    user.banExpireDt = OffsetDateTime.now().plusDays(day.toLong())
+                    accountRepository.save(user)
+                    sessionItem.addText("[${sessionItem.name}]님이 [${user.name}]님의 계정이 ${day}일간 차단되었습니다.\n사유: $text")
                 }
                 cmd.query == "/검색엔진 전체갱신" -> {
                     sessionItem.addText("[${sessionItem.name}]님이 검색엔진 reindex 작업을 시작했습니다.")
