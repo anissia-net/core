@@ -33,7 +33,7 @@ class As {
         val DTF_ISO_YMDHMS = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
         val DTF_ISO_CAPTION = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")
         val DTF_RANK_HOUR = DateTimeFormatter.ofPattern("yyyyMMddHH")
-        val DTF_USER_YMDHMS = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss일")
+        val DTF_USER_YMDHMS = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초")
         val EN_BASE64_URL = Base64.getUrlEncoder()
         val DE_BASE64_URL = Base64.getUrlDecoder()
 
