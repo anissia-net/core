@@ -67,7 +67,7 @@ class ActivePanelCommandServiceImpl(
 
                     user.banExpireDt = OffsetDateTime.now().plusDays(day.toLong())
                     accountRepository.save(user)
-                    sessionItem.addText("[${sessionItem.name}]님이 [${user.name}]님의 계정이 ${day}일간 차단되었습니다.\n사유: $text")
+                    sessionItem.addText("[${sessionItem.name}]님이 [${user.name}]님의 계정을 ${day}일간 차단되었습니다.\n사유: $text")
                 }
                 cmd.query == "/검색엔진 전체갱신" -> {
                     sessionItem.addText("[${sessionItem.name}]님이 검색엔진 reindex 작업을 시작했습니다.")
