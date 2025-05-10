@@ -23,12 +23,10 @@ class ActivePanelCommandServiceImpl(
     override fun doCommand(cmd: DoCommandActivePanelCommand, sessionItem: SessionItem): ResultWrapper<Unit> {
         cmd.validate()
         sessionItem.validateAdmin()
-
         if (cmd.commend) { // commend
-            sessionItem.validateRoot()
             when {
                 // drop permission
-                cmd.query.startsWith("/권한반납 ") -> {
+                cmd.query.startsWith("/권한반납 ") -> { sessionItem.validateRoot()
                     val name = cmd.query.substring(cmd.query.indexOf(' ') + 1)
                     val user = accountRepository.findByName(name)
                         ?: return ResultWrapper.fail("존재하지 않는 회원입니다.")
@@ -44,7 +42,7 @@ class ActivePanelCommandServiceImpl(
                         return ResultWrapper.fail("${user.name}님은 자막제작자 권한을 가지고 있지 않습니다.")
                     }
                 }
-                cmd.query.startsWith("/차단 ") -> {
+                cmd.query.startsWith("/차단 ") -> { sessionItem.validateAdmin()
                     // /차단 홍길동 320 광고글 작성
                     val q = cmd.query.trim().split(Regex("\\s+"))
                     if (q.size < 4) {
@@ -69,12 +67,12 @@ class ActivePanelCommandServiceImpl(
                     accountRepository.save(user)
                     sessionItem.addText("[${sessionItem.name}]님이 [${user.name}]님의 계정을 ${day}일간 차단되었습니다.\n사유: $text")
                 }
-                cmd.query == "/검색엔진 전체갱신" -> {
+                cmd.query == "/검색엔진 전체갱신" -> { sessionItem.validateRoot()
                     sessionItem.addText("[${sessionItem.name}]님이 검색엔진 reindex 작업을 시작했습니다.")
                     animeDocumentService.reset(false)
                     sessionItem.addText("검색엔진 reindex 작업이 완료되었습니다.")
                 }
-                cmd.query == "/검색엔진 초기화" -> {
+                cmd.query == "/검색엔진 초기화" -> { sessionItem.validateRoot()
                     sessionItem.addText("[${sessionItem.name}]님이 검색엔진 초기화 작업을 시작했습니다.")
                     animeDocumentService.reset(true)
                     sessionItem.addText("검색엔진 초기화 작업이 완료되었습니다.")
