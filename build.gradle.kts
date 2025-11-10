@@ -57,6 +57,11 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-webflux")
 }
 
+tasks.test {
+    useJUnitPlatform()
+    failOnNoDiscoveredTests = false
+}
+
 java {
 	toolchain {
 		languageVersion.set(JavaLanguageVersion.of(25))
