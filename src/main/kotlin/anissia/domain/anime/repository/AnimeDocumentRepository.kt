@@ -33,7 +33,7 @@ class AnimeDocumentRepository(
                 else keywords.add(word)
             }
 
-        val req = As.toJsonString(mapper.createObjectNode().apply {
+        val req: String = As.toJsonString(mapper.createObjectNode().apply {
             put("_source", false)
             putObject("query").apply {
                 putObject("bool").apply {

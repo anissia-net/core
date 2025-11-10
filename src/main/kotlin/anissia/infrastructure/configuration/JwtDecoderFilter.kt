@@ -5,7 +5,7 @@ import anissia.domain.account.Account
 import anissia.domain.session.model.SessionItem
 import anissia.domain.session.service.JwtService
 import anissia.infrastructure.common.As
-import com.fasterxml.jackson.databind.ObjectMapper
+import tools.jackson.databind.ObjectMapper
 import gs.shared.ErrorException
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order

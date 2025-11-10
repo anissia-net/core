@@ -13,11 +13,11 @@ import anissia.infrastructure.service.AsyncService
 import anissia.infrastructure.service.BCryptService
 import anissia.infrastructure.service.EmailService
 import anissia.shared.ResultWrapper
-import com.fasterxml.jackson.core.type.TypeReference
 import me.saro.kit.TextKit
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import tools.jackson.core.type.TypeReference
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 

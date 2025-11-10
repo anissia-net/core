@@ -1,12 +1,12 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-	val kotlinVersion = "2.1.20"
+	val kotlinVersion = "2.3.0-Beta2"
 	id("org.jetbrains.kotlin.jvm") version kotlinVersion
 	id("org.jetbrains.kotlin.plugin.spring") version kotlinVersion
 	id("org.jetbrains.kotlin.plugin.allopen") version kotlinVersion
 	id("org.jetbrains.kotlin.plugin.jpa") version kotlinVersion
-	id("org.springframework.boot") version "3.4.4"
+	id("org.springframework.boot") version "4.0.0-RC2"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.ec4j.editorconfig") version "0.1.0"
 	id("idea")
@@ -36,7 +36,7 @@ dependencies {
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 
 	// elasticsearch
-	implementation("org.elasticsearch.client:elasticsearch-rest-client:8.17.4")
+	implementation("org.elasticsearch.client:elasticsearch-rest-client:9.2.0")
 
 	// lib
 	implementation("me.saro:kit:0.2.3")
@@ -59,17 +59,17 @@ dependencies {
 
 java {
 	toolchain {
-		languageVersion.set(JavaLanguageVersion.of(23))
+		languageVersion.set(JavaLanguageVersion.of(25))
 	}
 }
 
 kotlin {
 	compilerOptions {
-		jvmTarget.set(JvmTarget.JVM_23)
+		jvmTarget.set(JvmTarget.JVM_25)
 	}
 }
 
 configure<JavaPluginExtension> {
-	sourceCompatibility = JavaVersion.VERSION_23
-	targetCompatibility = JavaVersion.VERSION_23
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
 }

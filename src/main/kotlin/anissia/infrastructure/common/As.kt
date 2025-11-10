@@ -1,8 +1,8 @@
 package anissia.infrastructure.common
 
 import anissia.domain.session.model.SessionItem
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
+import tools.jackson.core.type.TypeReference
+import tools.jackson.databind.ObjectMapper
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.core.MethodParameter
@@ -64,9 +64,9 @@ class As {
 
         fun <T> String.toMapByJson() = this.toClassByJson(object: TypeReference<Map<String, Any>>(){})
 
-        fun <T, U> replacePage(page: Page<U>, list: List<T>): Page<T> = PageImpl(list, page.pageable, page.totalElements)
+        fun <T: Any, U : Any> replacePage(page: Page<U>, list: List<T>): Page<T> = PageImpl(list, page.pageable, page.totalElements)
 
-        fun <T> filterPage(page: Page<T>, filter: (T) -> Boolean): Page<T> = PageImpl(page.content.filter { filter(it) }, page.pageable, page.totalElements)
+        fun <T: Any> filterPage(page: Page<T>, filter: (T) -> Boolean): Page<T> = PageImpl(page.content.filter { filter(it) }, page.pageable, page.totalElements)
 
         fun getHttp400(msg: String): MethodArgumentNotValidException {
             val errors = BeanPropertyBindingResult(null, "").apply { reject("400", msg) }

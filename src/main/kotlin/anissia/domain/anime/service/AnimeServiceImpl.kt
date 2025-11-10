@@ -20,7 +20,7 @@ import anissia.domain.session.model.SessionItem
 import anissia.domain.translator.service.TranslatorApplyService
 import anissia.infrastructure.common.As
 import anissia.shared.ResultWrapper
-import com.fasterxml.jackson.core.type.TypeReference
+import tools.jackson.core.type.TypeReference
 import me.saro.kit.lang.KoreanKit
 import me.saro.kit.service.CacheStore
 import org.elasticsearch.client.Response

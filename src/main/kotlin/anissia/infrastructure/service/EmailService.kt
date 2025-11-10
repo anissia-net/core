@@ -2,8 +2,8 @@ package anissia.infrastructure.service
 
 import anissia.infrastructure.common.As
 import anissia.shared.ResultWrapper
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
+import tools.jackson.core.type.TypeReference
+import tools.jackson.databind.ObjectMapper
 import jakarta.mail.Message
 import jakarta.mail.internet.InternetAddress
 import org.slf4j.Logger
