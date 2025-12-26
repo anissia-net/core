@@ -20,7 +20,6 @@ import anissia.domain.session.model.SessionItem
 import anissia.domain.translator.service.TranslatorApplyService
 import anissia.infrastructure.common.As
 import anissia.shared.ResultWrapper
-import tools.jackson.core.type.TypeReference
 import me.saro.kit.lang.KoreanKit
 import me.saro.kit.service.CacheStore
 import org.elasticsearch.client.Response
@@ -30,6 +29,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import tools.jackson.core.type.TypeReference
 import java.time.OffsetDateTime
 
 @Service
