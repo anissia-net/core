@@ -1,7 +1,7 @@
 package anissia.domain.anime.command
 
 class GetScheduleCommand(
-    val week: String,
+    val week: String = "",
     val useCache: Boolean = true,
 ) {
     fun validate() {

@@ -1,7 +1,7 @@
 package anissia.domain.account.command
 
 class CompleteRecoverPasswordCommand(
-    var absoluteToken: String,
+    var absoluteToken: String = "",
     var password: String = "",
 ) {
     /** token number */

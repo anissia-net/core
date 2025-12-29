@@ -3,7 +3,7 @@ package anissia.domain.board.command
 import gs.shared.FailException
 
 class DeletePostCommand(
-    var postNo: Long,
+    var postNo: Long = 0,
 ) {
     fun validate() {
         if (postNo <= 0)

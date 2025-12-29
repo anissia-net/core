@@ -1,7 +1,7 @@
 package anissia.domain.translator.command
 
 class NewApplyPollCommand(
-    var applyNo: Long,
+    var applyNo: Long = 0,
     var point: String = "",
     var comment: String = ""
 ) {

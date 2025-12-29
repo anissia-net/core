@@ -4,7 +4,7 @@ import anissia.infrastructure.common.As
 import java.time.LocalDateTime
 
 class EditCaptionCommand(
-    var animeNo: Long,
+    var animeNo: Long = 0,
     val episode: String = "0",
     val updDt: String = LocalDateTime.now().format(As.DTF_ISO_CAPTION),
     val website: String = ""

@@ -1,8 +1,8 @@
 package anissia.domain.anime.command
 
 class GetScheduleSvgCommand(
-    val width: String,
-    val color: String
+    val width: String = "",
+    val color: String = ""
 ) {
     fun validate() {
         if (!width.matches(Regex("\\d{3}"))) {

@@ -1,8 +1,8 @@
 package anissia.domain.anime.command
 
 class GetMyListCaptionCommand(
-    val active: Int,
-    val page: Int
+    val active: Int = 0,
+    val page: Int = 0
 ) {
     fun validate() {
         require(active in 0..1) { "active 는 0 또는 1 이어야 합니다." }

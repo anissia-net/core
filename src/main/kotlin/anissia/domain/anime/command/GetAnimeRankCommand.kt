@@ -1,7 +1,7 @@
 package anissia.domain.anime.command
 
 class GetAnimeRankCommand(
-    val type: String
+    val type: String = ""
 ) {
     fun validate() {
         when (type) {

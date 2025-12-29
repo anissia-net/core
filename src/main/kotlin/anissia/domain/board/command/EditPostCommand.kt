@@ -3,7 +3,7 @@ package anissia.domain.board.command
 import gs.shared.FailException
 
 class EditPostCommand(
-    var postNo: Long,
+    var postNo: Long = 0,
     val content: String = "",
 ) {
     fun validate() {

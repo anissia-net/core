@@ -1,7 +1,7 @@
 package anissia.domain.account.command
 
 class ValidateRecoverPasswordCommand(
-    var absoluteToken: String
+    var absoluteToken: String = ""
 ) {
     /** token number */
     val tn get() = absoluteToken.substringBefore('-', "0").toLong()

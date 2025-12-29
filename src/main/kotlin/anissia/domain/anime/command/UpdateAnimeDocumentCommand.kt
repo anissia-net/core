@@ -1,7 +1,7 @@
 package anissia.domain.anime.command
 
 class UpdateAnimeDocumentCommand(
-    val animeNo: Long,
+    val animeNo: Long = 0,
     val isDelete: Boolean = false
 ) {
     fun validate() {
