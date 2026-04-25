@@ -42,6 +42,15 @@
   GRANT ALL PRIVILEGES ON * . * TO 'anissia'@'%';
   FLUSH PRIVILEGES;
   ```
+비- [DAT](https://github.com/saro-lab/dat-bank)
+  ```
+  # 도커이니 로컬호스트가아닌 IP 입력필요.
+  # 도커가 없다면 위 주소에서 직접 컴파일하여 사용.
+  docker run -d --name dat -p 8088:80 \
+  -e DB_URI=mysql://username:password@host:port/anissia \
+  -e SINGLE_SERVER=CRON \
+  dat-bank
+  ```
 
 ## 실행
 각 IDE에서 실행하거나 직접 gradle wrapper를 이용하여 실행
