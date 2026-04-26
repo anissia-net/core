@@ -6,8 +6,8 @@ import anissia.domain.session.LoginPass
 import anissia.domain.session.LoginToken
 import anissia.domain.session.command.DoTokenLoginCommand
 import anissia.domain.session.command.DoUserLoginCommand
-import anissia.domain.session.command.GetJwtAuthInfoCommand
-import anissia.domain.session.model.JwtAuthInfoItem
+import anissia.domain.session.command.GetDatAuthInfoCommand
+import anissia.domain.session.model.DatAuthInfoItem
 import anissia.domain.session.model.SessionItem
 import anissia.domain.session.repository.LoginFailRepository
 import anissia.domain.session.repository.LoginPassRepository
@@ -27,12 +27,12 @@ class LoginServiceImpl(
     private val loginFailRepository: LoginFailRepository,
     private val loginPassRepository: LoginPassRepository,
     private val loginTokenRepository: LoginTokenRepository,
-    private val jwtService: JwtService,
+    private val datService: DatService,
 ): LoginService {
     private val log = As.logger<LoginServiceImpl>()
 
     @Transactional
-    override fun doUserLogin(cmd: DoUserLoginCommand, sessionItem: SessionItem): ResultWrapper<JwtAuthInfoItem> {
+    override fun doUserLogin(cmd: DoUserLoginCommand, sessionItem: SessionItem): ResultWrapper<DatAuthInfoItem> {
         cmd.validate()
         val ip = sessionItem.ip
 
@@ -51,11 +51,11 @@ class LoginServiceImpl(
 
         accountRepository.save(account.apply { lastLoginDt = OffsetDateTime.now() })
 
-        return getAuthInfo(GetJwtAuthInfoCommand(sessionItem = SessionItem.cast(account, ip), makeLoginToken = cmd.makeLoginToken))
+        return getAuthInfo(GetDatAuthInfoCommand(sessionItem = SessionItem.cast(account, ip), makeLoginToken = cmd.makeLoginToken))
     }
 
     @Transactional
-    override fun doTokenLogin(cmd: DoTokenLoginCommand, sessionItem: SessionItem): ResultWrapper<JwtAuthInfoItem> {
+    override fun doTokenLogin(cmd: DoTokenLoginCommand, sessionItem: SessionItem): ResultWrapper<DatAuthInfoItem> {
         val ip = sessionItem.ip
 
         if (loginFailRepository.countByIpAndEmailAndFailDtAfter(ip, "#${cmd.tn}", OffsetDateTime.now().plusMinutes(-30)) >= 10) {
@@ -69,7 +69,7 @@ class LoginServiceImpl(
 
                         accountRepository.save(account.apply { lastLoginDt = OffsetDateTime.now() })
 
-                        return getAuthInfo(GetJwtAuthInfoCommand(sessionItem = SessionItem.cast(account, ip), makeLoginToken = true))
+                        return getAuthInfo(GetDatAuthInfoCommand(sessionItem = SessionItem.cast(account, ip), makeLoginToken = true))
                     }
             }
 
@@ -79,17 +79,17 @@ class LoginServiceImpl(
     }
 
     @Transactional
-    override fun updateAuthInfo(sessionItem: SessionItem): ResultWrapper<JwtAuthInfoItem> {
+    override fun updateAuthInfo(sessionItem: SessionItem): ResultWrapper<DatAuthInfoItem> {
         if (sessionItem.isLogin) {
             accountRepository.findWithRolesByAn(sessionItem.an)
-                ?.run { getAuthInfo(GetJwtAuthInfoCommand(sessionItem = SessionItem.cast(this, sessionItem.ip), makeLoginToken = false)) }
+                ?.run { getAuthInfo(GetDatAuthInfoCommand(sessionItem = SessionItem.cast(this, sessionItem.ip), makeLoginToken = false)) }
                 ?.run { return@updateAuthInfo this }
         }
 
         return ResultWrapper.fail("유효하지 않은 토큰 정보입니다.", null)
     }
 
-    private fun getAuthInfo(cmd: GetJwtAuthInfoCommand): ResultWrapper<JwtAuthInfoItem> {
+    private fun getAuthInfo(cmd: GetDatAuthInfoCommand): ResultWrapper<DatAuthInfoItem> {
         val session = cmd.sessionItem
 
         val token = cmd.takeIf { it.makeLoginToken }
@@ -97,12 +97,10 @@ class LoginServiceImpl(
             ?.absoluteToken
             ?:""
 
-        val jwt = jwtService.createJwt(session)
-
         // clean up and return
         loginFailRepository.deleteByIpAndEmail(session.ip, session.email)
         loginPassRepository.save(LoginPass.create(an = session.an, connType = "login", ip = session.ip))
 
-        return ResultWrapper.ok(JwtAuthInfoItem(jwt, token))
+        return ResultWrapper.ok(DatAuthInfoItem(As.toDat(session), token))
     }
 }

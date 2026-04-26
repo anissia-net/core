@@ -2,7 +2,7 @@ package anissia.domain.session.controller
 
 import anissia.domain.session.command.DoTokenLoginCommand
 import anissia.domain.session.command.DoUserLoginCommand
-import anissia.domain.session.model.JwtAuthInfoItem
+import anissia.domain.session.model.DatAuthInfoItem
 import anissia.domain.session.service.LoginService
 import anissia.infrastructure.common.As
 import anissia.shared.ResultWrapper
@@ -15,14 +15,14 @@ class SessionController(
     private val loginService: LoginService,
 ) {
     @PostMapping
-    fun doLogin(@RequestBody cmd: DoUserLoginCommand, exchange: ServerWebExchange): ResultWrapper<JwtAuthInfoItem> =
+    fun doLogin(@RequestBody cmd: DoUserLoginCommand, exchange: ServerWebExchange): ResultWrapper<DatAuthInfoItem> =
         loginService.doUserLogin(cmd, As.toSession(exchange))
 
     @PostMapping("/token")
-    fun doTokenLogin(@RequestBody cmd: DoTokenLoginCommand, exchange: ServerWebExchange): ResultWrapper<JwtAuthInfoItem> =
+    fun doTokenLogin(@RequestBody cmd: DoTokenLoginCommand, exchange: ServerWebExchange): ResultWrapper<DatAuthInfoItem> =
         loginService.doTokenLogin(cmd, As.toSession(exchange))
 
     @PutMapping()
-    fun updateAuthInfo(exchange: ServerWebExchange): ResultWrapper<JwtAuthInfoItem> =
+    fun updateAuthInfo(exchange: ServerWebExchange): ResultWrapper<DatAuthInfoItem> =
         loginService.updateAuthInfo(As.toSession(exchange))
 }

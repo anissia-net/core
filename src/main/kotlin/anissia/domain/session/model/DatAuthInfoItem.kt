@@ -1,6 +1,6 @@
 package anissia.domain.session.model
 
-class JwtAuthInfoItem(
-    val jwt: String = "",
+class DatAuthInfoItem(
+    val dat: String = "",
     val token: String = "",
 )

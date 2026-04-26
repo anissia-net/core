@@ -1,6 +1,9 @@
 package anissia.infrastructure.common
 
+import anissia.domain.account.Account
 import anissia.domain.session.model.SessionItem
+import me.saro.dat.key.bank.DatBank
+import me.saro.dat.key.dat.kid.Kid
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.core.MethodParameter
@@ -36,16 +39,35 @@ class As {
         val DTF_USER_YMDHMS = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초")
         val EN_BASE64_URL = Base64.getUrlEncoder()
         val DE_BASE64_URL = Base64.getUrlDecoder()
-
-
-        private val typeRefSessionItem = object: TypeReference<SessionItem>() {}
+        val DAT_BANK = DatBank(Kid.BY_LONG)
 
         inline fun <reified T> logger(): Logger =
             LoggerFactory.getLogger(T::class.java)
 
         fun toSession(exchange: ServerWebExchange): SessionItem {
-            val jud = decodeBase64Url(exchange.request.headers.getFirst("jud")!!)
-            return OBJECT_MAPPER.readValue(jud, typeRefSessionItem)
+            val ip = exchange.request.remoteAddress?.address?.hostAddress?:"0.0.0.0"
+            val dat = exchange.request.headers.getFirst("dat")
+            if (dat != null) {
+                try {
+                    val payload = DAT_BANK.toPayload(dat)
+                    val split = payload.plain.split(" ")
+                    return SessionItem(
+                        an = payload.secure.toLong(),
+                        email = split[0],
+                        name = split[1],
+                        roles = split[2].takeIf { it.isNotBlank() }?.split(",") ?: listOf(),
+                        ip = ip,
+                    )
+                } catch (e: Exception) {}
+            }
+            return SessionItem.cast(Account(), ip)
+        }
+
+        fun toDat(sessionItem: SessionItem): String = try {
+            val roles = if (sessionItem.roles.isEmpty()) "" else " ${sessionItem.roles.joinToString(",")}"
+            DAT_BANK.toDat("${sessionItem.email} ${sessionItem.name} $roles", sessionItem.an.toString())
+        } catch (e: Exception) {
+            throw SecurityException(e.message)
         }
 
         fun getResource(path: String): URL = As::class.java.getResource(path)!!
