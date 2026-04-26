@@ -16,7 +16,7 @@ class DatServiceImpl(
         val keys: String? = restTemplate.getForObject("$datUri/keys/signing", String::class.java)
         if (keys != null) {
             As.DAT_BANK.importKeysFormat(keys, false)
-            log.info("sync DAT Key List")
+            log.info("Sync DAT Key List: " + As.DAT_BANK.exportkids().size)
         }
     }
 }
