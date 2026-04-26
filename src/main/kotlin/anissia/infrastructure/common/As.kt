@@ -64,7 +64,7 @@ class As {
         }
 
         fun toDat(sessionItem: SessionItem): String = try {
-            val roles = if (sessionItem.roles.isEmpty()) "" else " ${sessionItem.roles.joinToString(",")}"
+            val roles = if (sessionItem.roles.isEmpty()) "" else sessionItem.roles.joinToString(",")
             DAT_BANK.toDat("${sessionItem.email} ${sessionItem.name} $roles", sessionItem.an.toString())
         } catch (e: Exception) {
             throw SecurityException(e.message)
