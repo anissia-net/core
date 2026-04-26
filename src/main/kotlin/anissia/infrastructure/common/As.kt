@@ -40,6 +40,7 @@ class As {
         val EN_BASE64_URL = Base64.getUrlEncoder()
         val DE_BASE64_URL = Base64.getUrlDecoder()
         val DAT_BANK = DatBank(Kid.BY_LONG)
+가        const val DAT_CONV_VER = "1"
 
         inline fun <reified T> logger(): Logger =
             LoggerFactory.getLogger(T::class.java)
@@ -51,13 +52,15 @@ class As {
                 try {
                     val payload = DAT_BANK.toPayload(dat)
                     val split = payload.plain.split(" ")
-                    return SessionItem(
-                        an = payload.secure.toLong(),
-                        email = split[0],
-                        name = split[1],
-                        roles = split[2].takeIf { it.isNotBlank() }?.split(",") ?: listOf(),
-                        ip = ip,
-                    )
+                    if (split.size == 4 && split[0] == DAT_CONV_VER) {
+                        return SessionItem(
+                            an = payload.secure.toLong(),
+                            email = split[1],
+                            name = split[2],
+                            roles = split[3].takeIf { it.isNotBlank() }?.split(",") ?: listOf(),
+                            ip = ip,
+                        )
+                    }
                 } catch (e: Exception) {}
             }
             return SessionItem.cast(Account(), ip)
@@ -65,7 +68,7 @@ class As {
 
         fun toDat(sessionItem: SessionItem): String = try {
             val roles = if (sessionItem.roles.isEmpty()) "" else sessionItem.roles.joinToString(",")
-            DAT_BANK.toDat("${sessionItem.email} ${sessionItem.name} $roles", sessionItem.an.toString())
+            DAT_BANK.toDat("$DAT_CONV_VER ${sessionItem.email} ${sessionItem.name} $roles", sessionItem.an.toString())
         } catch (e: Exception) {
             throw SecurityException(e.message)
         }
