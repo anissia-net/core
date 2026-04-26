@@ -22,7 +22,7 @@ class BoardPost (
     var root: Boolean = false,
 
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition="LONGTEXT")
     var content: String = "",
 
     @Column(nullable = false)

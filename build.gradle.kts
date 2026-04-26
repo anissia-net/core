@@ -55,7 +55,6 @@ dependencies {
 	// test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.graphql:spring-graphql-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-webflux")
 }
 
 tasks.test {

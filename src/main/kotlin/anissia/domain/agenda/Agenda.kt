@@ -26,15 +26,15 @@ class Agenda (
     var an: Long = 0,
 
     @Lob
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition="LONGTEXT")
     var data1: String? = null,
 
     @Lob
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition="LONGTEXT")
     var data2: String? = null,
 
     @Lob
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition="LONGTEXT")
     var data3: String? = null,
 
     @Column(nullable = false)
