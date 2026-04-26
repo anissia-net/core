@@ -40,7 +40,7 @@ class As {
         val EN_BASE64_URL = Base64.getUrlEncoder()
         val DE_BASE64_URL = Base64.getUrlDecoder()
         val DAT_BANK = DatBank(Kid.BY_LONG)
-가        const val DAT_CONV_VER = "1"
+        const val DAT_CONV_VER = "1"
 
         inline fun <reified T> logger(): Logger =
             LoggerFactory.getLogger(T::class.java)
