@@ -1,6 +1,6 @@
 package anissia.infrastructure.common
 
-class RecordSeparator(
+class RecordSplitor(
     val version: String,
     val recordCount: Int,
     val separator: Char

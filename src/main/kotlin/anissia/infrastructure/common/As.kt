@@ -53,7 +53,7 @@ class As {
         val EN_BASE64_URL: Base64.Encoder = Base64.getUrlEncoder()
         val DE_BASE64_URL: Base64.Decoder = Base64.getUrlDecoder()
         val DAT_BANK = DatBank(Kid.BY_LONG)
-        val DAT_SEPARATOR = RecordSeparator("2", 3)
+        val DAT_SPLITOR = RecordSplitor("2", 3)
 
         inline fun <reified T> logger(): Logger =
             LoggerFactory.getLogger(T::class.java)
@@ -64,7 +64,7 @@ class As {
             if (dat != null) {
                 try {
                     val payload = DAT_BANK.toPayload(dat)
-                    val split = DAT_SEPARATOR.read(payload.plain)
+                    val split = DAT_SPLITOR.read(payload.plain)
                     if (split.isNotEmpty()) {
                         return SessionItem(
                             an = payload.secure.toLong(),
@@ -83,7 +83,7 @@ class As {
         }
 
         fun toDat(sessionItem: SessionItem): String = try {
-            val plain = DAT_SEPARATOR.write(sessionItem.email, sessionItem.name, sessionItem.roles.joinToString(","))
+            val plain = DAT_SPLITOR.write(sessionItem.email, sessionItem.name, sessionItem.roles.joinToString(","))
             DAT_BANK.toDat(plain, sessionItem.an.toString())
         } catch (e: Exception) {
             throw SecurityException(e.message)
