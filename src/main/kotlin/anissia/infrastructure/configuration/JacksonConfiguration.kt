@@ -1,12 +1,9 @@
 package anissia.infrastructure.configuration
 
+import anissia.infrastructure.common.As
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import tools.jackson.databind.DeserializationFeature
 import tools.jackson.databind.ObjectMapper
-import tools.jackson.databind.json.JsonMapper
-import tools.jackson.module.kotlin.KotlinFeature
-import tools.jackson.module.kotlin.KotlinModule
 
 @Configuration
 class JacksonConfiguration {
@@ -20,15 +17,6 @@ class JacksonConfiguration {
      */
     @Bean
     fun objectMapper(): ObjectMapper {
-        return JsonMapper.builder()
-            .addModule(
-                KotlinModule.Builder()
-                    .configure(KotlinFeature.NullIsSameAsDefault, true)
-                    .configure(KotlinFeature.StrictNullChecks, false)
-                    .build()
-            )
-            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            .disable(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES)
-            .build()
+        return As.OBJECT_MAPPER
     }
 }

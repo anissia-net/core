@@ -14,7 +14,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.util.HtmlUtils
 import tools.jackson.core.type.TypeReference
-import tools.jackson.databind.ObjectMapper
+import tools.jackson.databind.DeserializationFeature
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.kotlin.KotlinFeature
+import tools.jackson.module.kotlin.KotlinModule
 import java.net.URL
 import java.net.URLEncoder
 import java.time.LocalDate
@@ -28,19 +31,29 @@ import java.util.*
  */
 class As {
     companion object {
-        val OBJECT_MAPPER = ObjectMapper()
+
+        val OBJECT_MAPPER: JsonMapper = JsonMapper.builder()
+            .addModule(
+                KotlinModule.Builder()
+                    .configure(KotlinFeature.NullIsSameAsDefault, true)
+                    .configure(KotlinFeature.StrictNullChecks, false)
+                    .build()
+            )
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .disable(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES)
+            .build()
         const val IS_NAME = "[0-9A-Za-z가-힣㐀-䶵一-龻ぁ-ゖゝ-ヿ々_]{2,16}"
         const val IS_MAIL = "[_a-z0-9\\-]+(\\.[_a-z0-9\\-]+)*@([_a-z0-9\\-]+\\.)+[a-z]{2,}";
-        val IS_MAIL_REGEX = Regex(IS_MAIL)
-        val DTF_ISO_YMD = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        val DTF_ISO_YMDHMS = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-        val DTF_ISO_CAPTION = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")
-        val DTF_RANK_HOUR = DateTimeFormatter.ofPattern("yyyyMMddHH")
-        val DTF_USER_YMDHMS = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초")
-        val EN_BASE64_URL = Base64.getUrlEncoder()
-        val DE_BASE64_URL = Base64.getUrlDecoder()
+        val IS_MAIL_REGEX: Regex = Regex(IS_MAIL)
+        val DTF_ISO_YMD: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val DTF_ISO_YMDHMS: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+        val DTF_ISO_CAPTION: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")
+        val DTF_RANK_HOUR: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHH")
+        val DTF_USER_YMDHMS: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초")
+        val EN_BASE64_URL: Base64.Encoder = Base64.getUrlEncoder()
+        val DE_BASE64_URL: Base64.Decoder = Base64.getUrlDecoder()
         val DAT_BANK = DatBank(Kid.BY_LONG)
-        const val DAT_CONV_VER = "1"
+        val DAT_SEPARATOR = RecordSeparator("2", 3)
 
         inline fun <reified T> logger(): Logger =
             LoggerFactory.getLogger(T::class.java)
@@ -51,24 +64,27 @@ class As {
             if (dat != null) {
                 try {
                     val payload = DAT_BANK.toPayload(dat)
-                    val split = payload.plain.split(" ")
-                    if (split.size == 4 && split[0] == DAT_CONV_VER) {
+                    val split = DAT_SEPARATOR.read(payload.plain)
+                    if (split.isNotEmpty()) {
                         return SessionItem(
                             an = payload.secure.toLong(),
-                            email = split[1],
-                            name = split[2],
-                            roles = split[3].takeIf { it.isNotBlank() }?.split(",") ?: listOf(),
+                            email = split[0],
+                            name = split[1],
+                            roles = split[2].takeIf { it.isNotBlank() }?.split(",") ?: listOf(),
                             ip = ip,
                         )
                     }
-                } catch (e: Exception) {}
+                } catch (e: Exception) {
+                    exchange.response.headers.set("Dat-Error", "INVALID")
+                }
+
             }
             return SessionItem.cast(Account(), ip)
         }
 
         fun toDat(sessionItem: SessionItem): String = try {
-            val roles = if (sessionItem.roles.isEmpty()) "" else sessionItem.roles.joinToString(",")
-            DAT_BANK.toDat("$DAT_CONV_VER ${sessionItem.email} ${sessionItem.name} $roles", sessionItem.an.toString())
+            val plain = DAT_SEPARATOR.write(sessionItem.email, sessionItem.name, sessionItem.roles.joinToString(","))
+            DAT_BANK.toDat(plain, sessionItem.an.toString())
         } catch (e: Exception) {
             throw SecurityException(e.message)
         }

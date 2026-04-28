@@ -79,7 +79,10 @@ class AnimeServiceImpl(
         sessionItem.validateAdmin()
 
         return agendaRepository.findAllByCodeAndStatusOrderByAgendaNoDesc("ANIME-DEL", "wait")
-            .map { As.OBJECT_MAPPER.readValue(it.data1!!, object: TypeReference<AnimeItem>(){}).apply { this.agendaNo = it.agendaNo } }
+            .map {
+                As.OBJECT_MAPPER.readValue(it.data1!!, object: TypeReference<AnimeItem>(){})
+                    .apply { this.agendaNo = it.agendaNo }
+            }
     }
 
     override fun getAutocorrect(cmd: GetAutocorrectAnimeCommand): List<String> {

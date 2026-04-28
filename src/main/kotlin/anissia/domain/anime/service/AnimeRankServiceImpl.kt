@@ -16,7 +16,6 @@ import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import tools.jackson.core.type.TypeReference
-import tools.jackson.databind.ObjectMapper
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 
@@ -28,13 +27,12 @@ class AnimeRankServiceImpl(
 ): AnimeRankService {
 
     private val rankCacheStore = CacheStore<String, List<Map<*,*>>>((5 * 60000).toLong())
-    private val objectMapper = ObjectMapper()
     private val tr = object: TypeReference<List<Map<*, *>>>() {}
 
     override fun get(cmd: GetAnimeRankCommand): List<Map<*,*>> = rankCacheStore.find(cmd.type) { type ->
         when (type) {
             "week", "quarter", "year" ->
-                objectMapper.readValue(storeRepository.findByIdOrNull("rank.$type")?.data ?: "[]", tr)
+                As.OBJECT_MAPPER.readValue(storeRepository.findByIdOrNull("rank.$type")?.data ?: "[]", tr)
             else -> listOf()
         }
     }

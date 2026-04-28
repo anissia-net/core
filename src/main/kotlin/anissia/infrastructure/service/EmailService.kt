@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.javamail.JavaMailSenderImpl
 import org.springframework.stereotype.Service
 import tools.jackson.core.type.TypeReference
-import tools.jackson.databind.ObjectMapper
 import java.io.File
 import java.util.*
 
@@ -43,7 +42,7 @@ class EmailService (
 ) {
     private val configFile: File = File("./email.json")
     private val enable: Boolean = configFile.exists()
-    private val props: Map<String, String> = if (enable) ObjectMapper().readValue(configFile, object: TypeReference<Map<String, String>>(){}) else mapOf()
+    private val props: Map<String, String> = if (enable) As.OBJECT_MAPPER.readValue(configFile, object: TypeReference<Map<String, String>>(){}) else mapOf()
     private val sender: JavaMailSenderImpl = JavaMailSenderImpl()
     private val log: Logger = As.logger<EmailService>()
 
@@ -96,7 +95,7 @@ class EmailService (
             }
             ResultWrapper.ok()
         } else {
-            log.debug("""
+            log.info("""
                     EMAIL DEVELOP MODE
                     to: $to
                     cc: $cc
@@ -106,7 +105,7 @@ class EmailService (
             ResultWrapper.ok()
         }
     } catch (e: Exception) {
-        log.debug("""
+        log.info("""
             EMAIL ERROR
             to: $to
             cc: $cc
