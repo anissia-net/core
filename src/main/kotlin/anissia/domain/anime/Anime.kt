@@ -66,7 +66,7 @@ class Anime (
     var website: String = "",
 
     @Column(nullable = false, length = 128)
-    var twitter: String = "",
+    var x: String = "",
 
     @Column(nullable = false, length = 512)
     var note: String = "",
@@ -99,7 +99,7 @@ CREATE TABLE `anime` (
   `start_date` varchar(10) NOT NULL,
   `end_date` varchar(10) NOT NULL,
   `website` varchar(128) NOT NULL,
-  `twitter` varchar(128) NOT NULL,
+  `x` varchar(128) NOT NULL,
   `note` varchar(512) NOT NULL,
   `caption_count` int(11) NOT NULL,
   `upd_dt` datetime NOT NULL,

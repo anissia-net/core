@@ -20,7 +20,7 @@ class NewAnimeCommandTest {
         startDate = "2024-01-01",
         endDate = "2024-12-31",
         website = "https://a.com",
-        twitter = "https://t.com",
+        x = "https://t.com",
     )
 
     @Test
@@ -63,7 +63,7 @@ class NewAnimeCommandTest {
             status = cmd.status, week = cmd.week, time = cmd.time,
             subject = " 신작 ", originalSubject = cmd.originalSubject,
             genres = cmd.genres, startDate = cmd.startDate, endDate = cmd.endDate,
-            website = cmd.website, twitter = cmd.twitter
+            website = cmd.website, x = cmd.x
         )
         assertThrows(MethodArgumentNotValidException::class.java) { bad.validate() }
     }
@@ -116,11 +116,11 @@ class NewAnimeCommandTest {
     }
 
     @Test
-    fun `twitter 가 http 또는 https 로 시작하지 않으면 400 예외`() {
+    fun `x 가 http 또는 https 로 시작하지 않으면 400 예외`() {
         val cmd = NewAnimeCommand(
             status = "ON", week = "1", time = "12:00",
             subject = "s", genres = "액션",
-            twitter = "ftp://x"
+            x = "ftp://x"
         )
         assertThrows(MethodArgumentNotValidException::class.java) { cmd.validate() }
     }

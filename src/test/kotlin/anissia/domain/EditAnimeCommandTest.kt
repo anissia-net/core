@@ -21,7 +21,7 @@ class EditAnimeCommandTest {
         startDate = "2024-01-01",
         endDate = "2024-12-31",
         website = "https://a.com",
-        twitter = "https://t.com",
+        x = "https://t.com",
         note = "메모"
     )
 

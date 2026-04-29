@@ -123,7 +123,7 @@ class AnimeServiceImpl(
             startDate = cmd.startDate,
             endDate = cmd.endDate,
             website = cmd.website,
-            twitter = cmd.twitter,
+            x = cmd.x,
         )
 
         val activePanel = ActivePanel(
@@ -179,7 +179,7 @@ class AnimeServiceImpl(
                     it.startDate == cmd.startDate &&
                     it.endDate == cmd.endDate &&
                     it.website == cmd.website &&
-                    it.twitter == cmd.twitter &&
+                    it.x == cmd.x &&
                     it.note == cmd.note
                 ) {
                     return ResultWrapper.fail("변경사항이 없습니다.", -1)
@@ -197,7 +197,7 @@ class AnimeServiceImpl(
                 startDate = cmd.startDate
                 endDate = cmd.endDate
                 website = cmd.website
-                twitter = cmd.twitter
+                x = cmd.x
                 note = cmd.note
             }
             ?.also { activePanel.data3 = As.toJsonString(AnimeItem(it, false)) }
@@ -265,7 +265,7 @@ class AnimeServiceImpl(
                 startDate = animeItem.startDate,
                 endDate = animeItem.endDate,
                 website = animeItem.website,
-                twitter = animeItem.twitter,
+                x = animeItem.x,
                 captionCount = animeItem.captionCount
             )
         )

@@ -13,7 +13,7 @@ class NewAnimeCommand(
     val startDate: String = "",
     val endDate: String = "",
     val website: String = "",
-    val twitter: String = "",
+    val x: String = "",
 ) {
     val genresList get() = genres.split(",".toRegex())
     val statusEnum get() = AnimeStatus.valueOf(status)
@@ -34,7 +34,7 @@ class NewAnimeCommand(
         As.throwHttp400If("종료일이 규격에 맞지 않습니다.", !As.isAsAnimeDate(endDate))
         As.throwHttp400If("시작일은 종료일보다 미래일 수 없습니다.", startDate.isNotEmpty() && endDate.isNotEmpty() && startDate > endDate)
         As.throwHttp400If("사이트주소는 공백이거나 http:// https:// 로시작해야합니다.", !As.isWebSite(website, true))
-        As.throwHttp400If("트위터주소는 공백이거나 http:// https:// 로시작해야합니다.", !As.isWebSite(twitter, true))
+        As.throwHttp400If("X주소는 공백이거나 http:// https:// 로시작해야합니다.", !As.isWebSite(x, true))
     }
 }
 

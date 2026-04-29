@@ -14,7 +14,7 @@ class AnimeScheduleItem (
     val startDate: String,
     val endDate: String,
     val website: String,
-    val twitter: String,
+    val x: String,
 ) {
     constructor(anime: Anime): this(
         week = anime.week,
@@ -28,6 +28,6 @@ class AnimeScheduleItem (
         startDate = anime.startDate,
         endDate = anime.endDate,
         website = anime.website,
-        twitter = anime.twitter
+        x = anime.x
     )
 }
