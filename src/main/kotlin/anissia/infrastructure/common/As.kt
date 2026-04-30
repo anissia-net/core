@@ -3,7 +3,6 @@ package anissia.infrastructure.common
 import anissia.domain.account.Account
 import anissia.domain.session.model.SessionItem
 import me.saro.dat.key.bank.DatBank
-import me.saro.dat.key.dat.kid.Kid
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.core.MethodParameter
@@ -52,7 +51,7 @@ class As {
         val DTF_USER_YMDHMS: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초")
         val EN_BASE64_URL: Base64.Encoder = Base64.getUrlEncoder()
         val DE_BASE64_URL: Base64.Decoder = Base64.getUrlDecoder()
-        val DAT_BANK = DatBank(Kid.BY_LONG)
+        val DAT_BANK = DatBank()
         val DAT_SPLITOR = RecordSplitor("2", 3)
 
         inline fun <reified T> logger(): Logger =
