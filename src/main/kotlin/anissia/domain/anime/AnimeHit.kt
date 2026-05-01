@@ -1,24 +1,25 @@
 package anissia.domain.anime
 
-import jakarta.persistence.*
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Table
 
-@Entity
+
 @Table(
     indexes = [Index(name = "anime_hit_idx__hour_animeNo_ip", columnList = "hour,animeNo,ip")]
 )
 class AnimeHit (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column
     var id: Long = 0,
 
-    @Column(nullable = false, length = 39)
+    @Column
     var ip: String = "",
 
-    @Column(nullable = false)
+    @Column
     var animeNo: Long = 0,
 
-    @Column(nullable = false)
+    @Column
     var hour: Long = 0
 ) {
 

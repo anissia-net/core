@@ -1,7 +1,7 @@
 package anissia.domain.store.repository
 
 import anissia.domain.store.Store
-import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
-interface StoreRepository : JpaRepository<Store, String> { //, QuerydslPredicateExecutor<AnimeStore>
+interface StoreRepository : CoroutineCrudRepository<Store, String> { //, QuerydslPredicateExecutor<AnimeStore>
 }

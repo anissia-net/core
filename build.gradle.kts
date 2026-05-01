@@ -27,13 +27,11 @@ idea {
 }
 
 dependencies {
-	// JPA query dsl
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-mail")
 
 	// DB connector
-	implementation("com.zaxxer:HikariCP")
-	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
+    runtimeOnly("org.mariadb.r2dbc:r2dbc-mariadb:1.1.3")
 
 	// elasticsearch
 	implementation("org.elasticsearch.client:elasticsearch-rest-client:9.2.3")

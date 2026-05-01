@@ -4,11 +4,11 @@ import anissia.domain.board.BoardTopic
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.EntityGraph
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Modifying
-import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
+import org.springframework.data.r2dbc.repository.Modifying
+import org.springframework.data.r2dbc.repository.Query
 
-interface BoardTopicRepository : JpaRepository<BoardTopic, Long> { //, QuerydslPredicateExecutor<BoardTopic> {
+interface BoardTopicRepository : CoroutineCrudRepository<BoardTopic, Long> { //, QuerydslPredicateExecutor<BoardTopic> {
 
     @EntityGraph(attributePaths = ["account"])
     fun findWithAccountByTickerAndTopicNo(ticker: String, topicNo: Long): BoardTopic?

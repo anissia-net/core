@@ -1,11 +1,12 @@
 package anissia.domain.anime
 
 import anissia.domain.account.Account
-import jakarta.persistence.*
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
 import java.time.OffsetDateTime
 
-@Entity
+
 @Table(
     indexes = [
         Index(name = "anime_caption_idx__an_updDt", columnList = "an,updDt"),
@@ -15,16 +16,16 @@ import java.time.OffsetDateTime
 @IdClass(AnimeCaption.Key::class)
 class AnimeCaption (
     @Id
-    @Column(nullable = false)
+    @Column
     var an: Long = 0,
 
-    @Column(nullable = false, length = 10)
+    @Column
     var episode: String = "0",
 
-    @Column(nullable = false)
+    @Column
     var updDt: OffsetDateTime = OffsetDateTime.now(),
 
-    @Column(nullable = false, length = 512)
+    @Column
     var website: String = "",
 
     @OneToOne(fetch = FetchType.LAZY)

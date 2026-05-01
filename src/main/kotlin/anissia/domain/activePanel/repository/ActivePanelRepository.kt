@@ -3,13 +3,13 @@ package anissia.domain.activePanel.repository
 import anissia.domain.activePanel.ActivePanel
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Modifying
-import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
+import org.springframework.data.r2dbc.repository.Modifying
+import org.springframework.data.r2dbc.repository.Query
 import org.springframework.transaction.annotation.Transactional
 import java.time.OffsetDateTime
 
-interface ActivePanelRepository : JpaRepository<ActivePanel, Long> { //, QuerydslPredicateExecutor<ActivePanel> {
+interface ActivePanelRepository : CoroutineCrudRepository<ActivePanel, Long> { //, QuerydslPredicateExecutor<ActivePanel> {
 
     fun findAllByOrderByApNoDesc(pageable: Pageable): Page<ActivePanel>
 

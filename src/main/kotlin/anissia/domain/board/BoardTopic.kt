@@ -1,35 +1,36 @@
 package anissia.domain.board
 
 import anissia.domain.account.Account
-import jakarta.persistence.*
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Table
 import java.time.OffsetDateTime
 
-@Entity
+
 @Table(
     indexes = [Index(name = "board_topic_idx__ticker_fixed_topicNo", columnList = "ticker,fixed,topicNo")]
 )
 class BoardTopic (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column
     var topicNo: Long = 0,
 
-    @Column(nullable = false, length = 10)
+    @Column
     var ticker: String = "",
 
-    @Column(nullable = false)
+    @Column
     var fixed: Boolean = false,
 
-    @Column(nullable = false, length = 64)
+    @Column
     var topic: String = "",
 
-    @Column(nullable = false)
+    @Column
     var an: Long = 0,
 
-    @Column(nullable = false)
+    @Column
     var postCount: Int = 0,
 
-    @Column(nullable = false)
+    @Column
     var regDt: OffsetDateTime = OffsetDateTime.now(),
 
     @OneToOne

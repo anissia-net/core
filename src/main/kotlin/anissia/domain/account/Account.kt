@@ -1,49 +1,46 @@
 package anissia.domain.account
 
 
-import jakarta.persistence.*
-import org.hibernate.annotations.UpdateTimestamp
+import anissia.shared.LongPersistable
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
+import org.springframework.data.relational.core.mapping.Table
 import java.time.OffsetDateTime
 
-@Entity
-@Table(uniqueConstraints = [
-    UniqueConstraint(name = "account_uk__email", columnNames = ["email"]),
-    UniqueConstraint(name = "account_uk__name", columnNames = ["name"]),
-])
+
+@Table(name = "account")
 class Account (
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column
     var an: Long = 0, // account number
 
-    @Column(nullable = false, length = 64)
+    @Column
     var email: String = "",
 
-    @Column(nullable = false, length = 512)
+    @Column
     var password: String = "",
 
-    @Column(nullable = false, length = 16)
+    @Column
     var name: String = "",
 
-    @Column(nullable = false)
+    @Column
     var regDt: OffsetDateTime = OffsetDateTime.now(),
 
-    @UpdateTimestamp
-    @Column(nullable = false)
+    @Column
     var lastLoginDt: OffsetDateTime = OffsetDateTime.now(),
 
-    @Column(nullable = true)
+    @Column
     var banExpireDt: OffsetDateTime? = null,
 
-    @ElementCollection
-    @CollectionTable(name = "AccountRole", joinColumns = [JoinColumn(name = "an")])
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false, length = 10)
-    val roles: MutableSet<AccountRole> = mutableSetOf(),
-) {
+    @Column
+    val roles: String = "",
+): LongPersistable() {
+    override fun getId(): Long = an
     val isBan: Boolean get() = banExpireDt?.isAfter(OffsetDateTime.now()) == true
-    val isAdmin: Boolean get() = roles.any { it == AccountRole.TRANSLATOR || it == AccountRole.ROOT }
-    val isTranslator: Boolean get() = roles.any { it == AccountRole.TRANSLATOR }
+    val roleStringList: List<String> get() = roles.splitToSequence(",").filter { it.isNotEmpty() }.toList()
+    val roleList: List<AccountRole> get() = roles.splitToSequence(",").filter { it.isNotEmpty() }.map { AccountRole.valueOf(it) }.toList()
+    val isAdmin: Boolean get() = roleList.any { it == AccountRole.TRANSLATOR || it == AccountRole.ROOT }
+    val isTranslator: Boolean get() = roleList.any { it == AccountRole.TRANSLATOR }
 }
 
 /*
@@ -55,15 +52,10 @@ CREATE TABLE `account` (
 `reg_dt` datetime NOT NULL,
 `last_login_dt` datetime NOT NULL,
 `ban_expire_dt` datetime DEFAULT NULL,
+`roles` varchar(60) NOT NULL,
 PRIMARY KEY (`an`),
 UNIQUE KEY `account_pk2` (`email`),
 UNIQUE KEY `account_pk3` (`name`),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `account_role` (
-  `an` bigint(20) NOT NULL,
-  `role` varchar(10) NOT NULL,
-  PRIMARY KEY (`an`,`role`),
-  CONSTRAINT `account_role_fk1` FOREIGN KEY (`an`) REFERENCES `account` (`an`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 */

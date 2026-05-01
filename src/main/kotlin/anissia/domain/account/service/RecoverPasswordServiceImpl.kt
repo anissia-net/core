@@ -39,7 +39,7 @@ class RecoverPasswordServiceImpl(
     }
 
     @Transactional
-    override fun request(cmd: RequestRecoverPasswordCommand, sessionItem: SessionItem): ResultWrapper<Unit> {
+    override suspend fun request(cmd: RequestRecoverPasswordCommand, sessionItem: SessionItem): ResultWrapper<Unit> {
         cmd.validate()
 
         var account: Account = accountRepository.findByEmailAndName(cmd.email, cmd.name)
@@ -78,13 +78,13 @@ class RecoverPasswordServiceImpl(
 
 
     @Transactional
-    override fun complete(cmd: CompleteRecoverPasswordCommand): ResultWrapper<Unit> {
+    override suspend fun complete(cmd: CompleteRecoverPasswordCommand): ResultWrapper<Unit> {
         cmd.validate()
 
         val auth = accountRecoverAuthRepository.findByNoAndTokenAndExpDtAfterAndUsedDtNull(cmd.tn, cmd.token, OffsetDateTime.now())
             ?: return ResultWrapper.fail("이메일 인증이 만료되었습니다.")
 
-        val account = auth.account
+        val account = accountRepository.findById(auth.an)
             ?: return ResultWrapper.fail("해당 메일인증에서 계정정보를 찾을 수 없습니다.")
 
         accountRecoverAuthRepository.save(auth.apply { usedDt = OffsetDateTime.now() })
@@ -94,7 +94,7 @@ class RecoverPasswordServiceImpl(
     }
 
     @Transactional
-    override fun validate(cmd: ValidateRecoverPasswordCommand): ResultWrapper<Unit> {
+    override suspend fun validate(cmd: ValidateRecoverPasswordCommand): ResultWrapper<Unit> {
         cmd.validate()
 
         return accountRecoverAuthRepository.findByNoAndTokenAndExpDtAfterAndUsedDtNull(cmd.tn, cmd.token, OffsetDateTime.now())

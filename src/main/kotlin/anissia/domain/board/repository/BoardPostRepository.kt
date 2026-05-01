@@ -2,11 +2,11 @@ package anissia.domain.board.repository
 
 import anissia.domain.board.BoardPost
 import org.springframework.data.jpa.repository.EntityGraph
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Modifying
-import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
+import org.springframework.data.r2dbc.repository.Modifying
+import org.springframework.data.r2dbc.repository.Query
 
-interface BoardPostRepository : JpaRepository<BoardPost, Long> { //, QuerydslPredicateExecutor<BoardPost> {
+interface BoardPostRepository : CoroutineCrudRepository<BoardPost, Long> { //, QuerydslPredicateExecutor<BoardPost> {
 
 
     @EntityGraph(attributePaths = ["account"])

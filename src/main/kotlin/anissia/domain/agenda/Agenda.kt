@@ -1,9 +1,10 @@
 package anissia.domain.agenda
 
-import jakarta.persistence.*
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Table
 import java.time.OffsetDateTime
 
-@Entity
+
 @Table(
     indexes = [
         Index(name = "agenda_idx__code_status_agendaNo", columnList = "code,status,agendaNo"),
@@ -13,34 +14,34 @@ import java.time.OffsetDateTime
 class Agenda (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column
     var agendaNo: Long = 0,
 
-    @Column(nullable = false, length = 100)
+    @Column
     var code: String = "",
 
-    @Column(nullable = false, length = 32)
+    @Column
     var status: String = "",
 
-    @Column(nullable = false)
+    @Column
     var an: Long = 0,
 
     @Lob
-    @Column(nullable = true, columnDefinition="LONGTEXT")
+    @Column
     var data1: String? = null,
 
     @Lob
-    @Column(nullable = true, columnDefinition="LONGTEXT")
+    @Column
     var data2: String? = null,
 
     @Lob
-    @Column(nullable = true, columnDefinition="LONGTEXT")
+    @Column
     var data3: String? = null,
 
-    @Column(nullable = false)
+    @Column
     var regDt: OffsetDateTime = OffsetDateTime.now(),
 
-    @Column(nullable = false)
+    @Column
     var updDt: OffsetDateTime = OffsetDateTime.now(),
 
     @OneToMany(mappedBy = "agenda")

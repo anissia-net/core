@@ -1,37 +1,38 @@
 package anissia.domain.board
 
 import anissia.domain.account.Account
-import jakarta.persistence.*
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Table
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.OffsetDateTime
 
-@Entity
+
 @Table(
     indexes = [Index(name = "board_post_idx__topicNo_postNo", columnList = "topicNo,postNo")]
 )
 class BoardPost (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column
     var postNo: Long = 0,
 
-    @Column(nullable = false)
+    @Column
     var topicNo: Long = 0,
 
-    @Column(nullable = false)
+    @Column
     var root: Boolean = false,
 
     @Lob
-    @Column(nullable = false, columnDefinition="LONGTEXT")
+    @Column
     var content: String = "",
 
-    @Column(nullable = false)
+    @Column
     var an: Long = 0,
 
-    @Column(nullable = false)
+    @Column
     var regDt: OffsetDateTime = OffsetDateTime.now(),
 
-    @Column(nullable = false)
+    @Column
     @UpdateTimestamp
     var updDt: OffsetDateTime = OffsetDateTime.now(),
 

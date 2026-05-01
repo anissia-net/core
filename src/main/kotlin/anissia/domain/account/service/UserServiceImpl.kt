@@ -38,14 +38,14 @@ class UserServiceImpl(
     val codeUpdateName = "AC-UPD-NAME"
     val sessionException = FailException("세션정보가 만료되었습니다.\n다시 로그인해주세요.")
 
-    override fun get(sessionItem: SessionItem): AccountUserItem =
-        AccountUserItem.cast(accountRepository.findWithRolesByAn(sessionItem.an)!!)
+    override suspend fun get(sessionItem: SessionItem): AccountUserItem =
+        AccountUserItem.cast(accountRepository.findById(sessionItem.an)!!)
 
-    override fun editPassword(cmd: EditUserPasswordCommand, sessionItem: SessionItem): ResultWrapper<Unit> {
+    override suspend fun editPassword(cmd: EditUserPasswordCommand, sessionItem: SessionItem): ResultWrapper<Unit> {
         cmd.validate()
         sessionItem.validateLogin()
 
-        val account = accountRepository.findByIdOrNull(sessionItem.an)
+        val account = accountRepository.findById(sessionItem.an)
             ?.takeIf { bCryptService.matches(it.password, cmd.oldPassword) }
             ?: return ResultWrapper.fail("기존 암호가 일치하지 않습니다.")
 
@@ -54,22 +54,22 @@ class UserServiceImpl(
         return ResultWrapper.ok()
     }
 
-    override fun validateCriticalSession(sessionItem: SessionItem) {
+    override suspend fun validateCriticalSession(sessionItem: SessionItem) {
         sessionItem.validateLogin()
-        accountRepository.findWithRolesByAn(sessionItem.an)?.takeIf { account ->
+        accountRepository.findById(sessionItem.an)?.takeIf { account ->
             !account.isBan &&
                 account.name == sessionItem.name &&
                 account.email == sessionItem.email &&
-                As.same(account.roles.map { it.name }, sessionItem.roles)
+                As.same(account.roleStringList, sessionItem.roles)
         } ?: throw sessionException
     }
 
     @Transactional
-    override fun editName(cmd: EditUserNameCommand, sessionItem: SessionItem): ResultWrapper<Unit> {
+    override suspend fun editName(cmd: EditUserNameCommand, sessionItem: SessionItem): ResultWrapper<Unit> {
         cmd.validate()
         sessionItem.validateLogin()
 
-        val account = accountRepository.findByIdOrNull(sessionItem.an)
+        val account = accountRepository.findById(sessionItem.an)
             ?.takeIf { bCryptService.matches(it.password, cmd.password) }
             ?: return ResultWrapper.fail("암호가 일치하지 않습니다.")
 
@@ -92,7 +92,7 @@ class UserServiceImpl(
             return ResultWrapper.fail("사용중이거나 사용할 수 없는 이름입니다.")
         }
 
-        agendaRepository.saveAndFlush(
+        agendaRepository.save(
             Agenda(
                 code = codeUpdateName,
                 status = "DONE",
@@ -103,7 +103,7 @@ class UserServiceImpl(
             )
         )
 
-        accountRepository.saveAndFlush(account.apply { name = newName })
+        accountRepository.save(account.apply { name = newName })
 
         // 운영진
         if (account.roles.isNotEmpty()) {
@@ -116,7 +116,7 @@ class UserServiceImpl(
         return ResultWrapper.ok()
     }
 
-    private fun getUserTakeIfPassword(password: String, sessionItem: SessionItem) =
-        accountRepository.findByIdOrNull(sessionItem.an)
+    private suspend fun getUserTakeIfPassword(password: String, sessionItem: SessionItem) =
+        accountRepository.findById(sessionItem.an)
             ?.takeIf { bCryptService.matches(password, it.password) }
 }

@@ -5,13 +5,13 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.EntityGraph
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Modifying
-import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
+import org.springframework.data.r2dbc.repository.Modifying
+import org.springframework.data.r2dbc.repository.Query
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 
-interface AnimeRepository : JpaRepository<Anime, Long> { //, QuerydslPredicateExecutor<Anime> {
+interface AnimeRepository : CoroutineCrudRepository<Anime, Long> { //, QuerydslPredicateExecutor<Anime> {
 
     @Query("SELECT A FROM Anime A WHERE A.status <> anissia.domain.anime.AnimeStatus.END AND A.week = :week")
     fun findAllSchedule(week: String): List<Anime>

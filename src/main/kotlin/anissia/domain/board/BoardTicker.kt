@@ -5,23 +5,23 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 
-@Entity
+
 @Table
 class BoardTicker (
     @Id
-    @Column(nullable = false, length = 10)
+    @Column
     var ticker: String = "",
 
-    @Column(nullable = false, length = 20)
+    @Column
     var name: String = "",
 
-    @Column(nullable = false, length = 100)
+    @Column
     val writeTopicRoles: String = "",
 
-    @Column(nullable = false, length = 100)
+    @Column
     val writePostRoles: String = "",
 
-    @Column(nullable = false, length = 1024)
+    @Column
     val phTopic: String = ""
 ) {
 

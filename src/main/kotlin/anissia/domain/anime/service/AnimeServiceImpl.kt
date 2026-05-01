@@ -271,7 +271,7 @@ class AnimeServiceImpl(
         )
 
         animeItem.captions.forEach { caption ->
-            val account = accountRepository.findWithRolesByName(caption.name)
+            val account = accountRepository.findByName(caption.name)
             if (account?.isAdmin == true) {
                 animeCaptionRepository.save(
                     AnimeCaption(

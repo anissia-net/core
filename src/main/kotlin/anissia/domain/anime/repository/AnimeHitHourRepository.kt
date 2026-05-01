@@ -4,11 +4,11 @@ import anissia.domain.anime.AnimeHitHour
 import anissia.domain.anime.model.AnimeRankItem
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Modifying
-import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
+import org.springframework.data.r2dbc.repository.Modifying
+import org.springframework.data.r2dbc.repository.Query
 
-interface AnimeHitHourRepository : JpaRepository<AnimeHitHour, AnimeHitHour.Key> { //, QuerydslPredicateExecutor<AnimeHitHour> {
+interface AnimeHitHourRepository : CoroutineCrudRepository<AnimeHitHour, AnimeHitHour.Key> { //, QuerydslPredicateExecutor<AnimeHitHour> {
 
     @Modifying
     @Query("DELETE FROM AnimeHitHour WHERE hour < :hour")

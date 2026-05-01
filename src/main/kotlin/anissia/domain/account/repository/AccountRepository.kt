@@ -1,25 +1,16 @@
 package anissia.domain.account.repository
 
 import anissia.domain.account.Account
-import org.springframework.data.jpa.repository.EntityGraph
-import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
-interface AccountRepository : JpaRepository<Account, Long> { //, QuerydslPredicateExecutor<Account> {
+interface AccountRepository : CoroutineCrudRepository<Account, Long> {
+    suspend fun findByEmail(email: String): Account?
 
-    @EntityGraph(attributePaths = ["roles"])
-    fun findWithRolesByAn(an: Long): Account?
+    suspend fun findByEmailAndName(email: String, name: String): Account?
 
-    @EntityGraph(attributePaths = ["roles"])
-    fun findWithRolesByName(name: String): Account?
+    suspend fun findByName(name: String): Account?
 
-    @EntityGraph(attributePaths = ["roles"])
-    fun findWithRolesByEmail(email: String): Account?
+    suspend fun existsByName(name: String): Boolean
 
-    fun findByEmailAndName(email: String, name: String): Account?
-
-    fun findByName(name: String): Account?
-
-    fun existsByName(name: String): Boolean
-
-    fun existsByEmail(mail: String): Boolean
+    suspend fun existsByEmail(mail: String): Boolean
 }

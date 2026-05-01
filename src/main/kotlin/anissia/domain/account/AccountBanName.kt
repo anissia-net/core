@@ -1,15 +1,14 @@
 package anissia.domain.account
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
+import org.springframework.data.relational.core.mapping.Table
 
-@Entity
-@Table
+
+@Table(name = "account_ban_name")
 class AccountBanName (
     @Id
-    @Column(nullable = false, length = 16)
+    @Column
     var name: String = ""
 ) {
 

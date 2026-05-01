@@ -1,9 +1,9 @@
 package anissia.domain.agenda.repository
 
 import anissia.domain.agenda.AgendaPoll
-import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
-interface AgendaPollRepository : JpaRepository<AgendaPoll, Long> { //, QuerydslPredicateExecutor<AgendaPoll> {
+interface AgendaPollRepository : CoroutineCrudRepository<AgendaPoll, Long> { //, QuerydslPredicateExecutor<AgendaPoll> {
 
 
 }

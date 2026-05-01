@@ -1,28 +1,20 @@
 package anissia.domain.anime
 
-import jakarta.persistence.*
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Table
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.OffsetDateTime
 
-@Entity
-@Table(
-    uniqueConstraints = [
-        UniqueConstraint(name = "anime_uk__subject", columnNames = ["subject"])
-    ],
-    indexes = [
-        Index(name = "anime_idx__status_week_time", columnList = "status,week,time"),
-        Index(name = "anime_idx__status_animeNo", columnList = "status,animeNo"),
-        Index(name = "anime_idx__autocorrect", columnList = "autocorrect"),
-    ],
-)
+
+@Table(name = "anime")
 class Anime (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column
     var animeNo: Long = 0,
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column
     var status: AnimeStatus = AnimeStatus.ON,
 
     /**
@@ -38,44 +30,44 @@ class Anime (
      * 8 | 外 | 기타 | Other
      * 9 | 新 | 신작 | New
      */
-    @Column(nullable = false, length = 1)
+    @Column
     var week: String = "",
 
-    @Column(nullable = false, length = 5)
+    @Column
     var time: String = "",
 
-    @Column(nullable = false, length = 100)
+    @Column
     var subject: String = "",
 
-    @Column(nullable = false, length = 100)
+    @Column
     var originalSubject: String = "",
 
-    @Column(nullable = false, length = 512)
+    @Column
     var autocorrect: String = "",
 
-    @Column(nullable = false, length = 64)
+    @Column
     var genres: String = "",
 
-    @Column(nullable = false, length = 10)
+    @Column
     var startDate: String = "",
 
-    @Column(nullable = false, length = 10)
+    @Column
     var endDate: String = "",
 
-    @Column(nullable = false, length = 128)
+    @Column
     var website: String = "",
 
-    @Column(nullable = false, length = 128)
+    @Column
     var x: String = "",
 
-    @Column(nullable = false, length = 512)
+    @Column
     var note: String = "",
 
-    @Column(nullable = false)
+    @Column
     var captionCount: Int = 0,
 
     @UpdateTimestamp
-    @Column(nullable = false)
+    @Column
     var updDt: OffsetDateTime = OffsetDateTime.now(),
 
     @OneToMany(mappedBy = "anime")

@@ -1,10 +1,11 @@
 env: prod
 host: https://anissia.net
 
-spring.datasource:
-  url: jdbc:mariadb://localhost:3306/anissia
+spring.r2dbc:
+  url: r2dbc:mariadb://localhost:3306/anissia
   username: anissia
   password: anissia
+  properties.allowPipelining: true
 
 elasticsearch:
   url: http://localhost:9200

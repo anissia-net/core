@@ -1,9 +1,10 @@
 package anissia.domain.session
 
-import jakarta.persistence.*
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Table
 import java.time.OffsetDateTime
 
-@Entity
+
 @Table(
     indexes = [
         Index(name = "login_pass_idx__passDt", columnList = "passDt"),
@@ -12,19 +13,19 @@ import java.time.OffsetDateTime
 )
 class LoginPass (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column
     var loginPassNo: Long = 0,
 
-    @Column(nullable = false)
+    @Column
     var an: Long = 0,
 
-    @Column(nullable = false, length = 10)
+    @Column
     var connType: String = "",
 
-    @Column(nullable = false, length = 40)
+    @Column
     var ip: String = "",
 
-    @Column(nullable = false)
+    @Column
     var passDt: OffsetDateTime = OffsetDateTime.now()
 ) {
     companion object {

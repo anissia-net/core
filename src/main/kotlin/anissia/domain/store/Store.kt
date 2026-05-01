@@ -1,19 +1,20 @@
 package anissia.domain.store
 
-import jakarta.persistence.*
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Table
 
-@Entity
+
 @Table
 class Store (
     @Id
-    @Column(nullable = false, length = 64)
+    @Column
     var code: String = "", // code
 
-    @Column(nullable = true, length = 128)
+    @Column
     var cv: String = "", // code value : simple value
 
     @Lob
-    @Column(nullable = true, columnDefinition="LONGTEXT")
+    @Column
     var data: String = "" // long value
 ) {
 

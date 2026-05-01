@@ -1,23 +1,22 @@
 package anissia.domain.anime
 
-import jakarta.persistence.*
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
 
-@Entity
-@Table(
-    indexes = [Index(name = "anime_hit_hour_idx__animeNo_hour", columnList = "animeNo,hour")]
-)
+
+@Table(name = "anime_hit_hour")
 @IdClass(AnimeHitHour.Key::class)
 class AnimeHitHour (
     @Id
-    @Column(nullable = false, length = 10)
+    @Column
     var hour: Long = 0,
 
     @Id
-    @Column(nullable = false)
+    @Column
     var animeNo: Long = 0,
 
-    @Column(nullable = false)
+    @Column
     var hit: Long = 0
 ) {
     val key get() = Key(hour, animeNo)

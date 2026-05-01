@@ -5,12 +5,12 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.EntityGraph
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Modifying
-import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
+import org.springframework.data.r2dbc.repository.Modifying
+import org.springframework.data.r2dbc.repository.Query
 import java.time.OffsetDateTime
 
-interface AgendaRepository : JpaRepository<Agenda, Long> { //, QuerydslPredicateExecutor<Agenda> {
+interface AgendaRepository : CoroutineCrudRepository<Agenda, Long> { //, QuerydslPredicateExecutor<Agenda> {
 
     fun findAllByCodeAndStatusOrderByAgendaNoDesc(code: String, status: String, pageable: Pageable = PageRequest.of(0, 100)): Page<Agenda>
 

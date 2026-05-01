@@ -1,30 +1,29 @@
-env: dev
-host: http://localhost:8080
+spring:
+  profiles:
+    active: local
+
 google.analytics.id: G-Z38PT7F09M
 
 server:
   port: 8001
   forward-headers-strategy: native
 
-anissia:
-  rdb:
-    driverClassName: org.mariadb.jdbc.Driver
-    jdbcUrl: jdbc:mariadb://localhost:3306/anissia
-    username: anissia
-    password: anissia
-  ndb:
-    url: http://localhost:9200
+dat:
+  uri: http://localhost:8088
 
-spring:
-  jpa:
-    database-platform: org.hibernate.dialect.MariaDBDialect
-    properties.hibernate:
-      jdbc.batch_size: 4
-      dialect: org.hibernate.dialect.MariaDBDialect
-      timezone.default_storage: NORMALIZE
-    hibernate:
-      ddl-auto: none
-      naming:
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
-    open-in-view: true
-  data.elasticsearch.repositories.enabled: false
+env: local
+host: http://localhost:5173
+
+spring.r2dbc:
+  url: r2dbc:mariadb://localhost:3306/anissia
+  username: anissia
+  password: anissia
+  properties.allowPipelining: true
+
+# 테이블 자동생성
+# spring.sql.init.mode: always
+
+elasticsearch:
+  url: http://localhost:9200
+  username:
+  password:

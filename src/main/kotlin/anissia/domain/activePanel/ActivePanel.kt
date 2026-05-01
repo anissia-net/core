@@ -1,41 +1,42 @@
 package anissia.domain.activePanel
 
-import jakarta.persistence.*
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Table
 import java.time.OffsetDateTime
 
-@Entity
+
 @Table
 class ActivePanel (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column
     var apNo: Long = 0,
 
-    @Column(nullable = false)
+    @Column
     var published: Boolean = false,
 
-    @Column(nullable = false, length = 100)
+    @Column
     var code: String = "",
 
-    @Column(nullable = false, length = 32)
+    @Column
     var status: String = "",
 
-    @Column(nullable = false)
+    @Column
     var an: Long = 0,
 
     @Lob
-    @Column(nullable = true, columnDefinition="LONGTEXT")
+    @Column
     var data1: String? = null,
 
     @Lob
-    @Column(nullable = true, columnDefinition="LONGTEXT")
+    @Column
     var data2: String? = null,
 
     @Lob
-    @Column(nullable = true, columnDefinition="LONGTEXT")
+    @Column
     var data3: String? = null,
 
-    @Column(nullable = false)
+    @Column
     var regDt: OffsetDateTime = OffsetDateTime.now()
 ) {
 

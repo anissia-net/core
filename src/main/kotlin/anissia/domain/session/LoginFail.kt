@@ -1,9 +1,10 @@
 package anissia.domain.session
 
-import jakarta.persistence.*
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Table
 import java.time.OffsetDateTime
 
-@Entity
+
 @Table(
     indexes = [
         Index(name = "login_fail_idx__failDt", columnList = "failDt"),
@@ -13,16 +14,16 @@ import java.time.OffsetDateTime
 class LoginFail (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column
     var fn: Long = 0,
 
-    @Column(nullable = false, length = 40)
+    @Column
     var ip: String = "",
 
-    @Column(nullable = false, length = 64)
+    @Column
     var email: String = "",
 
-    @Column(nullable = false)
+    @Column
     var failDt: OffsetDateTime = OffsetDateTime.now()
 ) {
     companion object {

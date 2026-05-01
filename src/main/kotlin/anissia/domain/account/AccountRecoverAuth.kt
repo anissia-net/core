@@ -1,39 +1,34 @@
 package anissia.domain.account
 
-import jakarta.persistence.*
+import anissia.shared.LongPersistable
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
+import org.springframework.data.relational.core.mapping.Table
 import java.time.OffsetDateTime
 
-@Entity
-@Table(
-    uniqueConstraints = [UniqueConstraint(name = "account_recover_auth_uk__token", columnNames = ["token"])],
-    indexes = [Index(name = "account_recover_auth_idx__an_expDt", columnList = "an,expDt")]
-)
+
+@Table(name = "account_recover_auth")
 class AccountRecoverAuth (
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column
     var no: Long = 0,
 
-    @Column(nullable = false, length = 512)
+    @Column
     var token: String = "",
 
-    @Column(nullable = false)
+    @Column
     var an: Long = 0,
 
-    @Column(nullable = false, length = 40)
+    @Column
     var ip: String = "",
 
-    @Column(nullable = false)
+    @Column
     var expDt: OffsetDateTime = OffsetDateTime.now(),
 
-    @Column(nullable = true)
+    @Column
     var usedDt: OffsetDateTime? = null,
-
-    @OneToOne
-    @JoinColumn(name = "an", foreignKey = ForeignKey(name = "account_recover_auth_fk_account"), nullable = false, insertable = false, updatable = false)
-    var account: Account? = null
-) {
-
+): LongPersistable() {
+    override fun getId(): Long = no
 }
 
 /*

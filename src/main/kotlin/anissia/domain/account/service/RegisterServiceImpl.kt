@@ -41,7 +41,7 @@ class RegisterServiceImpl(
     }
 
     @Transactional
-    override fun request(cmd: RequestRegisterCommand, sessionItem: SessionItem): ResultWrapper<Unit> {
+    override suspend fun request(cmd: RequestRegisterCommand, sessionItem: SessionItem): ResultWrapper<Unit> {
         cmd.validate()
 
         if (sessionItem.isLogin) {
@@ -86,7 +86,7 @@ class RegisterServiceImpl(
     }
 
     @Transactional
-    override fun complete(cmd: CompleteRegisterCommand): ResultWrapper<Unit> {
+    override suspend fun complete(cmd: CompleteRegisterCommand): ResultWrapper<Unit> {
         cmd.validate()
 
         val auth: AccountRegisterAuth = accountRegisterAuthRepository.findByNoAndTokenAndExpDtAfterAndUsedDtNull(cmd.tn, cmd.token, OffsetDateTime.now())

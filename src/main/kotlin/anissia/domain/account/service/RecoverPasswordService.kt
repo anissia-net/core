@@ -7,7 +7,7 @@ import anissia.domain.session.model.SessionItem
 import anissia.shared.ResultWrapper
 
 interface RecoverPasswordService {
-    fun request(cmd: RequestRecoverPasswordCommand, sessionItem: SessionItem): ResultWrapper<Unit>
-    fun validate(cmd: ValidateRecoverPasswordCommand): ResultWrapper<Unit>
-    fun complete(cmd: CompleteRecoverPasswordCommand): ResultWrapper<Unit>
+    suspend fun request(cmd: RequestRecoverPasswordCommand, sessionItem: SessionItem): ResultWrapper<Unit>
+    suspend fun validate(cmd: ValidateRecoverPasswordCommand): ResultWrapper<Unit>
+    suspend fun complete(cmd: CompleteRecoverPasswordCommand): ResultWrapper<Unit>
 }

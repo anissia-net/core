@@ -2,11 +2,11 @@ package anissia.domain.anime.repository
 
 import anissia.domain.anime.AnimeHit
 import anissia.domain.anime.AnimeHitHour
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Modifying
-import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
+import org.springframework.data.r2dbc.repository.Modifying
+import org.springframework.data.r2dbc.repository.Query
 
-interface AnimeHitRepository : JpaRepository<AnimeHit, Long> { //, QuerydslPredicateExecutor<AnimeHit> {
+interface AnimeHitRepository : CoroutineCrudRepository<AnimeHit, Long> { //, QuerydslPredicateExecutor<AnimeHit> {
     @Modifying
     @Query("DELETE FROM AnimeHit WHERE hour < :hour")
     fun deleteByHourLessThan(hour: Long): Int

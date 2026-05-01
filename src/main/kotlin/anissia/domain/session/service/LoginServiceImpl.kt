@@ -41,7 +41,7 @@ class LoginServiceImpl(
             throw FailException("잦은 접속시도로 일정시간동안 차단되었습니다.\n시간이 지난 후 다시 시도해주세요.")
         }
 
-        val account = accountRepository.findWithRolesByEmail(cmd.email)
+        val account = accountRepository.findByEmail(cmd.email)
             ?.takeIf { bCryptService.matches(it.password, cmd.password) }
 
         if (account == null) {
@@ -64,7 +64,7 @@ class LoginServiceImpl(
 
         loginTokenRepository.findByTokenNoAndTokenAndExpDtAfter(cmd.tn, cmd.token, OffsetDateTime.now())
             ?.let { token ->
-                accountRepository.findWithRolesByAn(token.an)
+                accountRepository.findById(token.an)
                     ?.also { account ->
 
                         accountRepository.save(account.apply { lastLoginDt = OffsetDateTime.now() })
@@ -81,7 +81,7 @@ class LoginServiceImpl(
     @Transactional
     override fun updateAuthInfo(sessionItem: SessionItem): ResultWrapper<DatAuthInfoItem> {
         if (sessionItem.isLogin) {
-            accountRepository.findWithRolesByAn(sessionItem.an)
+            accountRepository.findById(sessionItem.an)
                 ?.run { getAuthInfo(GetDatAuthInfoCommand(sessionItem = SessionItem.cast(this, sessionItem.ip), makeLoginToken = false)) }
                 ?.run { return@updateAuthInfo this }
         }

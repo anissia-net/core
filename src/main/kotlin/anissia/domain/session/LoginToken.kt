@@ -1,27 +1,25 @@
 package anissia.domain.session
 
-import jakarta.persistence.*
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Table
 import me.saro.kit.TextKit
 import java.time.OffsetDateTime
 
-@Entity
-@Table(
-    uniqueConstraints = [UniqueConstraint(name = "login_token_uk__token", columnNames = ["token"])],
-    indexes = [Index(name = "login_token_idx__expDt", columnList = "expDt")]
-)
+
+@Table(name = "login_token")
 class LoginToken (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column
     var tokenNo: Long = 0,
 
-    @Column(nullable = false, length = 512)
+    @Column
     var token: String = "",
 
-    @Column(nullable = false)
+    @Column
     var an: Long = 0,
 
-    @Column(nullable = false)
+    @Column
     var expDt: OffsetDateTime
 ) {
     companion object {

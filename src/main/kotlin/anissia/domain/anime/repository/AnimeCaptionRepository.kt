@@ -4,12 +4,12 @@ import anissia.domain.anime.AnimeCaption
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.EntityGraph
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Modifying
-import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
+import org.springframework.data.r2dbc.repository.Modifying
+import org.springframework.data.r2dbc.repository.Query
 import java.time.OffsetDateTime
 
-interface AnimeCaptionRepository : JpaRepository<AnimeCaption, AnimeCaption.Key> {
+interface AnimeCaptionRepository : CoroutineCrudRepository<AnimeCaption, AnimeCaption.Key> {
 
     @EntityGraph(attributePaths = ["account"])
     @Query("SELECT a FROM AnimeCaption a WHERE a.anime.animeNo = :animeNo ORDER BY a.updDt DESC")
