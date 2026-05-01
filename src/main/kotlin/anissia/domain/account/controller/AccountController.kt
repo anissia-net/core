@@ -15,22 +15,22 @@ class AccountController(
     private val register: RegisterServiceImpl,
 ) {
     @PostMapping("/register")
-    fun register(@RequestBody cmd: RequestRegisterCommand, exchange: ServerWebExchange) =
+    suspend fun register(@RequestBody cmd: RequestRegisterCommand, exchange: ServerWebExchange) =
         register.request(cmd, As.toSession(exchange))
 
     @PutMapping("/register")
-    fun registerValidation(@RequestBody cmd: CompleteRegisterCommand, exchange: ServerWebExchange) =
+    suspend fun registerValidation(@RequestBody cmd: CompleteRegisterCommand, exchange: ServerWebExchange) =
         register.complete(cmd)
 
     @PostMapping("/recover")
-    fun recover(@RequestBody cmd: RequestRecoverPasswordCommand, exchange: ServerWebExchange) =
+    suspend fun recover(@RequestBody cmd: RequestRecoverPasswordCommand, exchange: ServerWebExchange) =
         recover.request(cmd, As.toSession(exchange))
 
     @PutMapping("/recover")
-    fun recoverValidation(@RequestBody cmd: ValidateRecoverPasswordCommand, exchange: ServerWebExchange) =
+    suspend fun recoverValidation(@RequestBody cmd: ValidateRecoverPasswordCommand, exchange: ServerWebExchange) =
         recover.validate(cmd)
 
     @PutMapping("/recover/password")
-    fun recoverPassword(@RequestBody cmd: CompleteRecoverPasswordCommand, exchange: ServerWebExchange) =
+    suspend fun recoverPassword(@RequestBody cmd: CompleteRecoverPasswordCommand, exchange: ServerWebExchange) =
         recover.complete(cmd)
 }

@@ -10,22 +10,22 @@ import java.time.OffsetDateTime
 @Table(name = "account_recover_auth")
 class AccountRecoverAuth (
     @Id
-    @Column
+    @Column("no")
     var no: Long = 0,
 
-    @Column
+    @Column("token")
     var token: String = "",
 
-    @Column
+    @Column("an")
     var an: Long = 0,
 
-    @Column
+    @Column("ip")
     var ip: String = "",
 
-    @Column
+    @Column("exp_dt")
     var expDt: OffsetDateTime = OffsetDateTime.now(),
 
-    @Column
+    @Column("used_dt")
     var usedDt: OffsetDateTime? = null,
 ): LongPersistable() {
     override fun getId(): Long = no

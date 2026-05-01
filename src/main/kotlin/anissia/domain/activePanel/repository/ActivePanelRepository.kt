@@ -11,10 +11,10 @@ import java.time.OffsetDateTime
 
 interface ActivePanelRepository : CoroutineCrudRepository<ActivePanel, Long> { //, QuerydslPredicateExecutor<ActivePanel> {
 
-    fun findAllByOrderByApNoDesc(pageable: Pageable): Page<ActivePanel>
+    suspend fun findAllByOrderByApNoDesc(pageable: Pageable): Page<ActivePanel>
 
     @Transactional
     @Modifying
     @Query("DELETE FROM ActivePanel WHERE regDt < :regDt")
-    fun deleteAllByRegDtBefore(regDt: OffsetDateTime = OffsetDateTime.now().minusDays(90))
+    suspend fun deleteAllByRegDtBefore(regDt: OffsetDateTime = OffsetDateTime.now().minusDays(90))
 }

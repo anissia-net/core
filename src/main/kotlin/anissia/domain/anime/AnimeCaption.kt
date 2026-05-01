@@ -1,41 +1,25 @@
 package anissia.domain.anime
 
-import anissia.domain.account.Account
 import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
 import java.time.OffsetDateTime
 
 
-@Table(
-    indexes = [
-        Index(name = "anime_caption_idx__an_updDt", columnList = "an,updDt"),
-        Index(name = "anime_caption_idx__updDt", columnList = "updDt")
-    ]
-)
-@IdClass(AnimeCaption.Key::class)
+@Table("anime_caption")
 class AnimeCaption (
     @Id
-    @Column
-    var an: Long = 0,
+    var id: AnimeCaptionId = AnimeCaptionId(),
 
-    @Column
+    @Column("episode")
     var episode: String = "0",
 
-    @Column
+    @Column("upd_dt")
     var updDt: OffsetDateTime = OffsetDateTime.now(),
 
-    @Column
+    @Column("website")
     var website: String = "",
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "an", foreignKey = ForeignKey(name = "anime_caption_fk_account"), nullable = false, insertable = false, updatable = false)
-    var account: Account? = null,
-
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "animeNo", foreignKey = ForeignKey(name = "anime_caption_fk_anime"))
-    var anime: Anime? = null
 ) {
     data class Key(val anime: Long = 0, val an: Long = 0) : Serializable
 

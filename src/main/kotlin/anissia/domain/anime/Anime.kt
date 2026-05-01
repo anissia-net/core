@@ -1,20 +1,19 @@
 package anissia.domain.anime
 
+import anissia.shared.LongPersistable
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
-import org.hibernate.annotations.UpdateTimestamp
+import org.springframework.data.relational.core.mapping.Column
 import java.time.OffsetDateTime
 
 
 @Table(name = "anime")
 class Anime (
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column("anime_no")
     var animeNo: Long = 0,
 
-    @Enumerated(EnumType.STRING)
-    @Column
+    @Column("status")
     var status: AnimeStatus = AnimeStatus.ON,
 
     /**
@@ -30,50 +29,47 @@ class Anime (
      * 8 | 外 | 기타 | Other
      * 9 | 新 | 신작 | New
      */
-    @Column
+    @Column("week")
     var week: String = "",
 
-    @Column
+    @Column("time")
     var time: String = "",
 
-    @Column
+    @Column("subject")
     var subject: String = "",
 
-    @Column
+    @Column("original_subject")
     var originalSubject: String = "",
 
-    @Column
+    @Column("autocorrect")
     var autocorrect: String = "",
 
-    @Column
+    @Column("genres")
     var genres: String = "",
 
-    @Column
+    @Column("start_date")
     var startDate: String = "",
 
-    @Column
+    @Column("end_date")
     var endDate: String = "",
 
-    @Column
+    @Column("website")
     var website: String = "",
 
-    @Column
+    @Column("x")
     var x: String = "",
 
-    @Column
+    @Column("note")
     var note: String = "",
 
-    @Column
+    @Column("caption_count")
     var captionCount: Int = 0,
 
-    @UpdateTimestamp
-    @Column
+    @Column("upd_dt")
     var updDt: OffsetDateTime = OffsetDateTime.now(),
 
-    @OneToMany(mappedBy = "anime")
-    val captions: List<AnimeCaption> = listOf()
-) {
-
+): LongPersistable() {
+    override fun getId(): Long = animeNo
 }
 
 /*

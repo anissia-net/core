@@ -11,29 +11,29 @@ import java.time.OffsetDateTime
 @Table(name = "account")
 class Account (
     @Id
-    @Column
+    @Column("an")
     var an: Long = 0, // account number
 
-    @Column
+    @Column("email")
     var email: String = "",
 
-    @Column
+    @Column("password")
     var password: String = "",
 
-    @Column
+    @Column("name")
     var name: String = "",
 
-    @Column
+    @Column("reg_dt")
     var regDt: OffsetDateTime = OffsetDateTime.now(),
 
-    @Column
+    @Column("last_login_dt")
     var lastLoginDt: OffsetDateTime = OffsetDateTime.now(),
 
-    @Column
+    @Column("ban_expire_dt")
     var banExpireDt: OffsetDateTime? = null,
 
-    @Column
-    val roles: String = "",
+    @Column("roles")
+    var roles: String = "",
 ): LongPersistable() {
     override fun getId(): Long = an
     val isBan: Boolean get() = banExpireDt?.isAfter(OffsetDateTime.now()) == true

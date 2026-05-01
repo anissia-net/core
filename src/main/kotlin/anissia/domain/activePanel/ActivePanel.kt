@@ -1,45 +1,43 @@
 package anissia.domain.activePanel
 
+import anissia.shared.LongPersistable
 import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.time.OffsetDateTime
 
 
-@Table
+@Table("active_panel")
 class ActivePanel (
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column("ap_no")
     var apNo: Long = 0,
 
-    @Column
+    @Column("published")
     var published: Boolean = false,
 
-    @Column
+    @Column("code")
     var code: String = "",
 
-    @Column
+    @Column("status")
     var status: String = "",
 
-    @Column
+    @Column("an")
     var an: Long = 0,
 
-    @Lob
-    @Column
+    @Column("data1")
     var data1: String? = null,
 
-    @Lob
-    @Column
+    @Column("data2")
     var data2: String? = null,
 
-    @Lob
-    @Column
+    @Column("data3")
     var data3: String? = null,
 
-    @Column
+    @Column("reg_dt")
     var regDt: OffsetDateTime = OffsetDateTime.now()
-) {
-
+): LongPersistable() {
+    override fun getId() = apNo
 }
 
 /*

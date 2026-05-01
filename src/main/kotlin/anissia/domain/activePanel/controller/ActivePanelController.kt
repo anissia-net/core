@@ -18,10 +18,10 @@ class ActivePanelController(
     private val activePanelCommandService: ActivePanelCommandService,
 ) {
     @GetMapping("/list/{page:[\\d]+}")
-    fun getList(cmd: GetListActivePanelCommand, exchange: ServerWebExchange): ResultWrapper<Page<ActivePanelItem>> =
+    suspend fun getList(cmd: GetListActivePanelCommand, exchange: ServerWebExchange): ResultWrapper<Page<ActivePanelItem>> =
         ResultWrapper.ok(activePanelLogService.getList(cmd, As.toSession(exchange)))
 
     @PostMapping("/command")
-    fun doCommand(@RequestBody cmd: DoCommandActivePanelCommand, exchange: ServerWebExchange): ResultWrapper<Unit> =
+    suspend fun doCommand(@RequestBody cmd: DoCommandActivePanelCommand, exchange: ServerWebExchange): ResultWrapper<Unit> =
         activePanelCommandService.doCommand(cmd, As.toSession(exchange))
 }

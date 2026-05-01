@@ -1,27 +1,18 @@
 package anissia.domain.anime
 
 import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
-import java.io.Serializable
 
 
 @Table(name = "anime_hit_hour")
-@IdClass(AnimeHitHour.Key::class)
 class AnimeHitHour (
     @Id
-    @Column
-    var hour: Long = 0,
+    var id: AnimeHitHourId = AnimeHitHourId(),
 
-    @Id
-    @Column
-    var animeNo: Long = 0,
-
-    @Column
+    @Column("hit")
     var hit: Long = 0
 ) {
-    val key get() = Key(hour, animeNo)
-
-    data class Key(var hour: Long = 0, var animeNo: Long = 0) : Serializable
 }
 
 /*

@@ -10,7 +10,7 @@ import anissia.shared.ResultWrapper
 import org.springframework.data.domain.Page
 
 interface ActivePanelLogService {
-    fun getList(cmd: GetListActivePanelCommand, sessionItem: SessionItem): Page<ActivePanelItem>
-    fun addText(cmd: AddTextActivePanelCommand, sessionItem: SessionItem?): ResultWrapper<Unit>
-    fun addNotice(cmd: DoCommandActivePanelCommand, sessionItem: SessionItem): ResultWrapper<Unit>
+    suspend fun getList(cmd: GetListActivePanelCommand, sessionItem: SessionItem): Page<ActivePanelItem>
+    suspend fun addText(cmd: AddTextActivePanelCommand, sessionItem: SessionItem?): ResultWrapper<Unit>
+    suspend fun addNotice(cmd: DoCommandActivePanelCommand, sessionItem: SessionItem): ResultWrapper<Unit>
 }

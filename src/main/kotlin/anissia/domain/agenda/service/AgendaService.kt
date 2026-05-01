@@ -1,5 +1,5 @@
 package anissia.domain.agenda.service
 
 interface AgendaService {
-    fun deleteDeletePaddingAnime()
+    suspend fun deleteDeletePaddingAnime()
 }

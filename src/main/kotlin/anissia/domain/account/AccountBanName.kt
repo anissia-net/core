@@ -8,7 +8,7 @@ import org.springframework.data.relational.core.mapping.Table
 @Table(name = "account_ban_name")
 class AccountBanName (
     @Id
-    @Column
+    @Column("name")
     var name: String = ""
 ) {
 

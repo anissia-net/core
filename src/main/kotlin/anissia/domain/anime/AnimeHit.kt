@@ -1,28 +1,27 @@
 package anissia.domain.anime
 
+import anissia.shared.LongPersistable
 import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 
 
-@Table(
-    indexes = [Index(name = "anime_hit_idx__hour_animeNo_ip", columnList = "hour,animeNo,ip")]
-)
+@Table("anime_hit")
 class AnimeHit (
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column("id")
     var id: Long = 0,
 
-    @Column
+    @Column("ip")
     var ip: String = "",
 
-    @Column
+    @Column("anime_no")
     var animeNo: Long = 0,
 
-    @Column
+    @Column("hour")
     var hour: Long = 0
-) {
-
+): LongPersistable() {
+    override fun getId(): Long = id
 }
 
 /*

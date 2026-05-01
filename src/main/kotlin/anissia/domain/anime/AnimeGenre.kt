@@ -1,15 +1,13 @@
 package anissia.domain.anime
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
+import org.springframework.data.relational.core.mapping.Table
 
-
-@Table
+@Table(name = "anime_genre")
 class AnimeGenre (
     @Id
-    @Column
+    @Column("genre")
     var genre: String = ""
 ) {
 

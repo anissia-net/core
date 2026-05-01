@@ -14,14 +14,14 @@ class AccountUserController(
     private val userService: UserService,
 ) {
     @GetMapping
-    fun getUser(exchange: ServerWebExchange) =
+    suspend fun getUser(exchange: ServerWebExchange) =
         userService.get(As.toSession(exchange))
 
     @PutMapping("/password")
-    fun editUserPassword(@RequestBody cmd: EditUserPasswordCommand, exchange: ServerWebExchange) =
+    suspend fun editUserPassword(@RequestBody cmd: EditUserPasswordCommand, exchange: ServerWebExchange) =
         userService.editPassword(cmd, As.toSession(exchange))
 
     @PutMapping("/name")
-    fun editUserName(@RequestBody cmd: EditUserNameCommand, exchange: ServerWebExchange) =
+    suspend fun editUserName(@RequestBody cmd: EditUserNameCommand, exchange: ServerWebExchange) =
         userService.editName(cmd, As.toSession(exchange))
 }

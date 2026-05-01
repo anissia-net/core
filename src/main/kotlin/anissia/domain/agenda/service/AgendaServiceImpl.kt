@@ -10,7 +10,7 @@ class AgendaServiceImpl(
 ): AgendaService {
 
     @Transactional
-    override fun deleteDeletePaddingAnime() {
+    override suspend fun deleteDeletePaddingAnime() {
         agendaRepository.deleteDeletePadding()
     }
 

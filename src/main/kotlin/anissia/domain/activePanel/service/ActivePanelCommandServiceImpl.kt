@@ -20,7 +20,7 @@ class ActivePanelCommandServiceImpl(
     private val captionService: CaptionService,
 ) : ActivePanelCommandService {
     @Transactional
-    override fun doCommand(cmd: DoCommandActivePanelCommand, sessionItem: SessionItem): ResultWrapper<Unit> {
+    override suspend fun doCommand(cmd: DoCommandActivePanelCommand, sessionItem: SessionItem): ResultWrapper<Unit> {
         cmd.validate()
         sessionItem.validateAdmin()
         if (cmd.commend) { // commend
@@ -33,7 +33,9 @@ class ActivePanelCommandServiceImpl(
 
                     if (user.isTranslator) {
                         // remove permission
-                        user.roles.removeIf { it == AccountRole.TRANSLATOR }
+                        user.roles = user.roleList.toMutableList()
+                            .apply { removeIf { it == AccountRole.TRANSLATOR } }
+                            .joinToString(",")
                         accountRepository.save(user)
                         val deleteCount = captionService.delete(user, sessionItem)
                         sessionItem.addText("[${user.name}]님의 자막제작자 권한이 해지되었습니다.")
@@ -86,9 +88,9 @@ class ActivePanelCommandServiceImpl(
         return ResultWrapper.ok()
     }
 
-    private fun SessionItem.addText(text: String) =
+    private suspend fun SessionItem.addText(text: String) =
         activePanelLogService.addText(AddTextActivePanelCommand(text), this)
 
-    private fun SessionItem.addNotice(cmd: DoCommandActivePanelCommand) =
+    private suspend fun SessionItem.addNotice(cmd: DoCommandActivePanelCommand) =
         activePanelLogService.addNotice(cmd, this)
 }

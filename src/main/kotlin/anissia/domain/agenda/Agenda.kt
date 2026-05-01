@@ -1,53 +1,43 @@
 package anissia.domain.agenda
 
+import anissia.shared.LongPersistable
 import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.time.OffsetDateTime
 
 
-@Table(
-    indexes = [
-        Index(name = "agenda_idx__code_status_agendaNo", columnList = "code,status,agendaNo"),
-        Index(name = "agenda_idx__code_status_an_agendaNo", columnList = "code,status,an,agendaNo")
-    ],
-)
+@Table("agenda")
 class Agenda (
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column("agenda_no")
     var agendaNo: Long = 0,
 
-    @Column
+    @Column("code")
     var code: String = "",
 
-    @Column
+    @Column("status")
     var status: String = "",
 
-    @Column
+    @Column("an")
     var an: Long = 0,
 
-    @Lob
-    @Column
+    @Column("data1")
     var data1: String? = null,
 
-    @Lob
-    @Column
+    @Column("data2")
     var data2: String? = null,
 
-    @Lob
-    @Column
+    @Column("data3")
     var data3: String? = null,
 
-    @Column
+    @Column("reg_dt")
     var regDt: OffsetDateTime = OffsetDateTime.now(),
 
-    @Column
+    @Column("upd_dt")
     var updDt: OffsetDateTime = OffsetDateTime.now(),
-
-    @OneToMany(mappedBy = "agenda")
-    val polls: List<AgendaPoll> = listOf()
-) {
-
+): LongPersistable() {
+    override fun getId(): Long = agendaNo
 }
 
 /*

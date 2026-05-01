@@ -14,7 +14,7 @@ class AccountUserItem (
             email = account.email,
             name = account.name,
             regTime = account.regDt.toEpochSecond(),
-            roles = account.roles
+            roles = account.roleList.toSet()
         )
     }
 }

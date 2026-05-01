@@ -1,27 +1,26 @@
 package anissia.domain.anime.repository
 
 import anissia.domain.anime.AnimeCaption
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
-import org.springframework.data.jpa.repository.EntityGraph
-import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.data.r2dbc.repository.Modifying
 import org.springframework.data.r2dbc.repository.Query
-import java.time.OffsetDateTime
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
 interface AnimeCaptionRepository : CoroutineCrudRepository<AnimeCaption, AnimeCaption.Key> {
 
-    @EntityGraph(attributePaths = ["account"])
-    @Query("SELECT a FROM AnimeCaption a WHERE a.anime.animeNo = :animeNo ORDER BY a.updDt DESC")
-    fun findAllWithAccountByAnimeNoOrderByUpdDtDesc(animeNo: Long): List<AnimeCaption>
-
-    @EntityGraph(attributePaths = ["anime"])
-    @Query("SELECT a FROM AnimeCaption a JOIN a.anime b WHERE a.an = :an AND b.status <> anissia.domain.anime.AnimeStatus.END ORDER BY a.updDt DESC")
-    fun findAllWithAnimeForAdminCaptionActiveList(an: Long, pageable: Pageable): Page<AnimeCaption>
-
-    @EntityGraph(attributePaths = ["anime"])
-    @Query("SELECT a FROM AnimeCaption a JOIN a.anime b WHERE a.an = :an AND b.status = anissia.domain.anime.AnimeStatus.END ORDER BY a.updDt DESC")
-    fun findAllWithAnimeForAdminCaptionEndList(an: Long, pageable: Pageable): Page<AnimeCaption>
+//    @EntityGraph(attributePaths = ["account"])
+//    @Query("SELECT a FROM AnimeCaption a WHERE a.anime.animeNo = :animeNo ORDER BY a.updDt DESC")
+//    fun findAllWithAccountByAnimeNoOrderByUpdDtDesc(animeNo: Long): List<AnimeCaption>
+//
+//    @EntityGraph(attributePaths = ["anime"])
+//    @Query("SELECT a FROM AnimeCaption a JOIN a.anime b WHERE a.an = :an AND b.status <> anissia.domain.anime.AnimeStatus.END ORDER BY a.updDt DESC")
+//    fun findAllWithAnimeForAdminCaptionActiveList(an: Long, pageable: Pageable): Page<AnimeCaption>
+//
+//    @EntityGraph(attributePaths = ["anime"])
+//    @Query("SELECT a FROM AnimeCaption a JOIN a.anime b WHERE a.an = :an AND b.status = anissia.domain.anime.AnimeStatus.END ORDER BY a.updDt DESC")
+//    fun findAllWithAnimeForAdminCaptionEndList(an: Long, pageable: Pageable): Page<AnimeCaption>
+//
+//    @EntityGraph(attributePaths = ["account", "anime"])
+//    fun findAllByUpdDtAfterAndWebsiteNotOrderByUpdDtDesc(pageable: Pageable, updDt: OffsetDateTime = OffsetDateTime.now().minusDays(90), website: String = ""): Page<AnimeCaption>
 
     @Modifying
     @Query("DELETE FROM AnimeCaption a WHERE a.anime.animeNo = :animeNo")
@@ -32,7 +31,4 @@ interface AnimeCaptionRepository : CoroutineCrudRepository<AnimeCaption, AnimeCa
     fun findAllTranslatorByAnimeNo(animeNo: Long): List<String>
 
     fun findAllByAn(an: Long): List<AnimeCaption>
-
-    @EntityGraph(attributePaths = ["account", "anime"])
-    fun findAllByUpdDtAfterAndWebsiteNotOrderByUpdDtDesc(pageable: Pageable, updDt: OffsetDateTime = OffsetDateTime.now().minusDays(90), website: String = ""): Page<AnimeCaption>
 }
