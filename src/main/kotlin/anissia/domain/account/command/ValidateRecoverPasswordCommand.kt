@@ -11,6 +11,6 @@ class ValidateRecoverPasswordCommand(
 
     fun validate() {
         if (absoluteToken.isBlank()) throw IllegalArgumentException("토큰이 없습니다.")
-        if (absoluteToken.length < 128 || absoluteToken.length > 600) throw IllegalArgumentException("토큰이 잘못되었습니다.")
+        if (absoluteToken.length !in 128..600) throw IllegalArgumentException("토큰이 잘못되었습니다.")
     }
 }
