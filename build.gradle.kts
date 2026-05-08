@@ -41,7 +41,7 @@ dependencies {
 	// lib
 	implementation("me.saro:kit:0.2.3")
 	implementation("org.mindrot:jbcrypt:0.4")
-	implementation("me.saro:dat:1.1.0")
+	implementation("me.saro:dat:2.0.0")
     implementation("tools.jackson.module:jackson-module-kotlin")
 
 	// logger
