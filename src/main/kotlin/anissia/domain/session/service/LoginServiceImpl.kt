@@ -101,6 +101,6 @@ class LoginServiceImpl(
         loginFailRepository.deleteByIpAndEmail(session.ip, session.email)
         loginPassRepository.save(LoginPass.create(an = session.an, connType = "login", ip = session.ip))
 
-        return ResultWrapper.ok(DatAuthInfoItem(As.toDat(session), token))
+        return ResultWrapper.ok(DatAuthInfoItem(As.issueDat(session), token))
     }
 }
