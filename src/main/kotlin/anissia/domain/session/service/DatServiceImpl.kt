@@ -13,7 +13,7 @@ class DatServiceImpl(
     private val log = As.logger<DatServiceImpl>()
 
     override fun sync() {
-        val keys: String? = restTemplate.getForObject("$datUri/keys/signing", String::class.java)
+        val keys: String? = restTemplate.getForObject("$datUri/certificates/signing", String::class.java)
         if (keys != null) {
             As.DAT_BANK.imports(keys, false)
             log.info("Sync DAT Key List: " + As.DAT_BANK.exportsKids().size)
