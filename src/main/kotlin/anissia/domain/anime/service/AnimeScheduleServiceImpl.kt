@@ -4,7 +4,7 @@ import anissia.domain.anime.command.GetScheduleCommand
 import anissia.domain.anime.command.GetScheduleSvgCommand
 import anissia.domain.anime.model.AnimeScheduleItem
 import anissia.domain.anime.repository.AnimeRepository
-import anissia.infrastructure.common.As
+import anissia.infrastructure.common.AsDat
 import anissia.infrastructure.service.GoogleAnalyticsProxyService
 import me.saro.kit.service.CacheStore
 import org.springframework.stereotype.Service
@@ -28,7 +28,7 @@ class AnimeScheduleServiceImpl(
                 .also { googleAnalyticsProxyService.send("/api/anime/schedule/${cmd.week}", exchange) }
         } else {
             // 캐시 없는 호출은 관리자만 가능
-            As.toSession(exchange).validateAdmin()
+            AsDat.toSession(exchange).validateAdmin()
             getScheduleNotCache(cmd.week)
         }
     }

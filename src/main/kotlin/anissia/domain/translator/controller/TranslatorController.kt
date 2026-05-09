@@ -6,7 +6,7 @@ import anissia.domain.translator.command.GetApplyListCommand
 import anissia.domain.translator.command.NewApplyPollCommand
 import anissia.domain.translator.model.TranslatorApplyItem
 import anissia.domain.translator.service.TranslatorApplyService
-import anissia.infrastructure.common.As
+import anissia.infrastructure.common.AsDat
 import anissia.shared.ResultWrapper
 import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.*
@@ -31,9 +31,9 @@ class TranslatorController(
 
     @PostMapping("/apply")
     fun newApply(@RequestBody cmd: AddApplyCommand, exchange: ServerWebExchange): ResultWrapper<Long> =
-        translatorApplyService.add(cmd, As.toSession(exchange))
+        translatorApplyService.add(cmd, AsDat.toSession(exchange))
 
     @PostMapping("/apply/{applyNo:\\d+}/poll")
     fun newApplyPoll(@RequestBody cmd: NewApplyPollCommand, @PathVariable applyNo: Long, exchange: ServerWebExchange): ResultWrapper<Unit> =
-        translatorApplyService.addPoll(cmd.apply { this.applyNo = applyNo }, As.toSession(exchange))
+        translatorApplyService.addPoll(cmd.apply { this.applyNo = applyNo }, AsDat.toSession(exchange))
 }

@@ -7,7 +7,7 @@ import anissia.domain.anime.service.AnimeGenreGenres
 import anissia.domain.anime.service.AnimeRankService
 import anissia.domain.anime.service.AnimeService
 import anissia.domain.session.model.SessionItem
-import anissia.infrastructure.common.As
+import anissia.infrastructure.common.AsDat
 import anissia.shared.ResultWrapper
 import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.*
@@ -26,7 +26,7 @@ class AnimeController(
 
     @GetMapping("/delist")
     fun getAnimeDelist(exchange: ServerWebExchange): ResultWrapper<Page<AnimeItem>> =
-        ResultWrapper.ok(animeService.getDelist(As.toSession(exchange)))
+        ResultWrapper.ok(animeService.getDelist(AsDat.toSession(exchange)))
 
     @GetMapping("/animeNo/{animeNo:\\d+}")
     fun getAnime(cmd: GetAnimeCommand, sessionItem: SessionItem, exchange: ServerWebExchange): ResultWrapper<AnimeItem> =
@@ -46,17 +46,17 @@ class AnimeController(
 
     @DeleteMapping("/{animeNo}")
     fun deleteAnime(cmd: DeleteAnimeCommand, exchange: ServerWebExchange): ResultWrapper<Unit> =
-        animeService.delete(cmd, As.toSession(exchange))
+        animeService.delete(cmd, AsDat.toSession(exchange))
 
     @PostMapping
     fun newAnime(@RequestBody cmd: NewAnimeCommand, exchange: ServerWebExchange): ResultWrapper<Long> =
-        animeService.add(cmd, As.toSession(exchange))
+        animeService.add(cmd, AsDat.toSession(exchange))
 
     @PutMapping("/{animeNo}")
     fun editAnime(@RequestBody cmd: EditAnimeCommand, @PathVariable animeNo: Long, exchange: ServerWebExchange): ResultWrapper<Long> =
-        animeService.edit(cmd.apply { this.animeNo = animeNo }, As.toSession(exchange))
+        animeService.edit(cmd.apply { this.animeNo = animeNo }, AsDat.toSession(exchange))
 
     @PostMapping("/recover/{agendaNo}")
     fun recoverAnime(cmd: RecoverAnimeCommand, exchange: ServerWebExchange): ResultWrapper<Long> =
-        animeService.recover(cmd, As.toSession(exchange))
+        animeService.recover(cmd, AsDat.toSession(exchange))
 }

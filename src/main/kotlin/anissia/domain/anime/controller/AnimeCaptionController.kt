@@ -6,7 +6,7 @@ import anissia.domain.anime.model.CaptionItem
 import anissia.domain.anime.model.CaptionRecentItem
 import anissia.domain.anime.model.MyCaptionItem
 import anissia.domain.anime.service.CaptionService
-import anissia.infrastructure.common.As
+import anissia.infrastructure.common.AsDat
 import anissia.shared.ResultWrapper
 import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.*
@@ -19,11 +19,11 @@ class AnimeCaptionController(
 ) {
     @GetMapping("/caption/animeNo/{animeNo:\\d+}")
     fun getCaptionListByAnimeNo(cmd: GetListCaptionByAnimeNoCommand, exchange: ServerWebExchange): ResultWrapper<List<CaptionItem>> =
-        ResultWrapper.ok(captionService.getList(cmd, As.toSession(exchange)))
+        ResultWrapper.ok(captionService.getList(cmd, AsDat.toSession(exchange)))
 
     @GetMapping("/caption/myList/{active}/{page}")
     fun getMyCaptionList(cmd: GetMyListCaptionCommand, exchange: ServerWebExchange): ResultWrapper<Page<MyCaptionItem>> =
-        ResultWrapper.ok(captionService.getList(cmd, As.toSession(exchange)))
+        ResultWrapper.ok(captionService.getList(cmd, AsDat.toSession(exchange)))
 
     @GetMapping("/caption/recent")
     fun getCaptionRecent(exchange: ServerWebExchange): ResultWrapper<List<CaptionRecentItem>> =
@@ -35,13 +35,13 @@ class AnimeCaptionController(
 
     @DeleteMapping("/caption/{animeNo}")
     fun deleteCaption(cmd: DeleteCaptionCommand, exchange: ServerWebExchange): ResultWrapper<Unit> =
-        captionService.delete(cmd, As.toSession(exchange))
+        captionService.delete(cmd, AsDat.toSession(exchange))
 
     @PostMapping("/caption/{animeNo}")
     fun newCaption(cmd: AddCaptionCommand, exchange: ServerWebExchange): ResultWrapper<Unit> =
-        captionService.add(cmd, As.toSession(exchange))
+        captionService.add(cmd, AsDat.toSession(exchange))
 
     @PutMapping("/caption/{animeNo}")
     fun editCaption(@RequestBody cmd: EditCaptionCommand, @PathVariable animeNo: Long, exchange: ServerWebExchange): ResultWrapper<Unit> =
-        captionService.edit(cmd.apply { this.animeNo = animeNo }, As.toSession(exchange))
+        captionService.edit(cmd.apply { this.animeNo = animeNo }, AsDat.toSession(exchange))
 }

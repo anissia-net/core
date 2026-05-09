@@ -4,7 +4,7 @@ package anissia.domain.account.controller
 import anissia.domain.account.command.EditUserNameCommand
 import anissia.domain.account.command.EditUserPasswordCommand
 import anissia.domain.account.service.UserService
-import anissia.infrastructure.common.As
+import anissia.infrastructure.common.AsDat
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ServerWebExchange
 
@@ -15,13 +15,13 @@ class AccountUserController(
 ) {
     @GetMapping
     fun getUser(exchange: ServerWebExchange) =
-        userService.get(As.toSession(exchange))
+        userService.get(AsDat.toSession(exchange))
 
     @PutMapping("/password")
     fun editUserPassword(@RequestBody cmd: EditUserPasswordCommand, exchange: ServerWebExchange) =
-        userService.editPassword(cmd, As.toSession(exchange))
+        userService.editPassword(cmd, AsDat.toSession(exchange))
 
     @PutMapping("/name")
     fun editUserName(@RequestBody cmd: EditUserNameCommand, exchange: ServerWebExchange) =
-        userService.editName(cmd, As.toSession(exchange))
+        userService.editName(cmd, AsDat.toSession(exchange))
 }

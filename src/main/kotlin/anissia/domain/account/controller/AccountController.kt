@@ -4,7 +4,7 @@ package anissia.domain.account.controller
 import anissia.domain.account.command.*
 import anissia.domain.account.service.RecoverPasswordService
 import anissia.domain.account.service.RegisterServiceImpl
-import anissia.infrastructure.common.As
+import anissia.infrastructure.common.AsDat
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ServerWebExchange
 
@@ -16,7 +16,7 @@ class AccountController(
 ) {
     @PostMapping("/register")
     fun register(@RequestBody cmd: RequestRegisterCommand, exchange: ServerWebExchange) =
-        register.request(cmd, As.toSession(exchange))
+        register.request(cmd, AsDat.toSession(exchange))
 
     @PutMapping("/register")
     fun registerValidation(@RequestBody cmd: CompleteRegisterCommand, exchange: ServerWebExchange) =
@@ -24,7 +24,7 @@ class AccountController(
 
     @PostMapping("/recover")
     fun recover(@RequestBody cmd: RequestRecoverPasswordCommand, exchange: ServerWebExchange) =
-        recover.request(cmd, As.toSession(exchange))
+        recover.request(cmd, AsDat.toSession(exchange))
 
     @PutMapping("/recover")
     fun recoverValidation(@RequestBody cmd: ValidateRecoverPasswordCommand, exchange: ServerWebExchange) =

@@ -6,7 +6,7 @@ import anissia.domain.board.model.BoardTopicItem
 import anissia.domain.board.service.BoardService
 import anissia.domain.board.service.PostService
 import anissia.domain.board.service.TopicService
-import anissia.infrastructure.common.As
+import anissia.infrastructure.common.AsDat
 import anissia.shared.ResultWrapper
 import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.*
@@ -37,25 +37,25 @@ class BoardController(
 
     @PostMapping("/topic/{ticker}")
     fun newTopic(@RequestBody cmd: NewTopicCommand, @PathVariable ticker: String, exchange: ServerWebExchange): ResultWrapper<Long> =
-        topicService.add(cmd.apply { this.ticker = ticker }, As.toSession(exchange))
+        topicService.add(cmd.apply { this.ticker = ticker }, AsDat.toSession(exchange))
 
     @PutMapping("/topic/{topicNo}")
     fun editTopic(@RequestBody cmd: EditTopicCommand, @PathVariable topicNo: Long, exchange: ServerWebExchange): ResultWrapper<Unit> =
-        topicService.edit(cmd.apply { this.topicNo = topicNo }, As.toSession(exchange))
+        topicService.edit(cmd.apply { this.topicNo = topicNo }, AsDat.toSession(exchange))
 
     @DeleteMapping("/topic/{topicNo}")
     fun deleteTopic(cmd: DeleteTopicCommand, exchange: ServerWebExchange): ResultWrapper<Unit> =
-        topicService.delete(cmd, As.toSession(exchange))
+        topicService.delete(cmd, AsDat.toSession(exchange))
 
     @PostMapping("/post/{topicNo}")
     fun newPost(@RequestBody cmd: NewPostCommand, @PathVariable topicNo: Long, exchange: ServerWebExchange): ResultWrapper<Unit> =
-        postService.add(cmd.apply { this.topicNo = topicNo }, As.toSession(exchange))
+        postService.add(cmd.apply { this.topicNo = topicNo }, AsDat.toSession(exchange))
 
     @PutMapping("/post/{postNo}")
     fun editPost(@RequestBody cmd: EditPostCommand, @PathVariable postNo: Long, exchange: ServerWebExchange): ResultWrapper<Unit> =
-        postService.edit(cmd.apply { this.postNo = postNo }, As.toSession(exchange))
+        postService.edit(cmd.apply { this.postNo = postNo }, AsDat.toSession(exchange))
 
     @DeleteMapping("/post/{postNo}")
     fun deletePost(cmd: DeletePostCommand, exchange: ServerWebExchange): ResultWrapper<Unit> =
-        postService.delete(cmd, As.toSession(exchange))
+        postService.delete(cmd, AsDat.toSession(exchange))
 }

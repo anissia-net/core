@@ -13,6 +13,7 @@ import anissia.domain.session.repository.LoginFailRepository
 import anissia.domain.session.repository.LoginPassRepository
 import anissia.domain.session.repository.LoginTokenRepository
 import anissia.infrastructure.common.As
+import anissia.infrastructure.common.AsDat
 import anissia.infrastructure.service.BCryptService
 import anissia.shared.ResultWrapper
 import gs.shared.FailException
@@ -101,6 +102,6 @@ class LoginServiceImpl(
         loginFailRepository.deleteByIpAndEmail(session.ip, session.email)
         loginPassRepository.save(LoginPass.create(an = session.an, connType = "login", ip = session.ip))
 
-        return ResultWrapper.ok(DatAuthInfoItem(As.issueDat(session), token))
+        return ResultWrapper.ok(DatAuthInfoItem(AsDat.issue(session), token))
     }
 }
