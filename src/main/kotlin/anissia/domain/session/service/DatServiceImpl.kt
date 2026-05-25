@@ -12,7 +12,7 @@ class DatServiceImpl(
     private val restTemplate: RestTemplate,
 ): DatService {
     override fun sync() {
-        val certificates: String? = restTemplate.getForObject<String>("$datUri/certificates/signing")
+        val certificates: String? = restTemplate.getForObject<String>("$datUri/certs")
         AsDat.imports(certificates)
     }
 }
