@@ -28,7 +28,6 @@ class LoginServiceImpl(
     private val loginFailRepository: LoginFailRepository,
     private val loginPassRepository: LoginPassRepository,
     private val loginTokenRepository: LoginTokenRepository,
-    private val datService: DatService,
 ): LoginService {
     private val log = As.logger<LoginServiceImpl>()
 

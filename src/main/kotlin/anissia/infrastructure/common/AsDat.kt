@@ -2,21 +2,21 @@ package anissia.infrastructure.common
 
 import anissia.domain.account.Account
 import anissia.domain.session.model.SessionItem
-import me.saro.dat.dat.DatManager
+import me.saro.dat.dat.DatCmsManager
 import org.springframework.web.server.ServerWebExchange
 
 class AsDat {
     companion object {
         private val SPLITOR = RecordSplitor("2", 3)
-        private val DAT_MANAGER = DatManager.newInstance()
+        private val MANAGER = DatCmsManager.builder().build()
         private val log = As.logger<AsDat>()
 
         fun toSession(exchange: ServerWebExchange): SessionItem {
             val ip = exchange.request.remoteAddress?.address?.hostAddress?:"0.0.0.0"
             val dat = exchange.request.headers.getFirst("dat")
-            if (dat != null) {
+            if (!dat.isNullOrBlank()) {
                 try {
-                    val payload = DAT_MANAGER.parse(dat)
+                    val payload = MANAGER.parse(dat)
                     val split = SPLITOR.read(payload.plain)
                     if (split.isNotEmpty()) {
                         return SessionItem(
@@ -38,16 +38,9 @@ class AsDat {
 
         fun issue(sessionItem: SessionItem): String = try {
             val plain = SPLITOR.write(sessionItem.email, sessionItem.name, sessionItem.roles.joinToString(","))
-            DAT_MANAGER.issue(plain, sessionItem.an.toString())
+            MANAGER.issue(plain, sessionItem.an.toString())
         } catch (e: Exception) {
             throw SecurityException(e.message)
-        }
-
-        fun imports(certificates: String?) {
-            if (certificates != null) {
-                DAT_MANAGER.imports(certificates, false)
-                log.info("Sync DAT Key List: " + DAT_MANAGER.exportsCertificates().size)
-            }
         }
     }
 }

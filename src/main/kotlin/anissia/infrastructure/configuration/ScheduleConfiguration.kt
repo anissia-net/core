@@ -8,8 +8,6 @@ import anissia.domain.anime.service.AnimeRankService
 import anissia.domain.session.repository.LoginFailRepository
 import anissia.domain.session.repository.LoginPassRepository
 import anissia.domain.session.repository.LoginTokenRepository
-import anissia.domain.session.service.DatService
-import jakarta.annotation.PostConstruct
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled
@@ -18,7 +16,6 @@ import org.springframework.scheduling.annotation.Scheduled
 @Configuration
 @EnableScheduling
 class ScheduleConfiguration(
-    private val datService: DatService,
     private val animeRankService: AnimeRankService,
     private val agendaService: AgendaService,
     private val activePanelRepository: ActivePanelRepository,
@@ -32,12 +29,6 @@ class ScheduleConfiguration(
     // 매일 1:00 에 실행
     @Scheduled(cron = "0 1 * * * ?")
     fun animeRankBatch() = animeRankService.renew()
-
-    // dat 키 갱신
-    // 매 10분 10초에 실행
-    @PostConstruct
-    @Scheduled(cron = "10 0/10 * * * ?")
-    fun syncDatKeyList() = datService.sync()
 
     // 삭제 예정 애니메이션 삭제
     // 매일 20시에 실행
