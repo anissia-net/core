@@ -26,6 +26,8 @@ class SessionItem (
                 ip = ip
             )
         }
+
+        fun noLogin(ip: String): SessionItem = SessionItem(ip = ip)
     }
 
     fun validateLogin() {

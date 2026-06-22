@@ -1,6 +1,5 @@
 package anissia.infrastructure.common
 
-import anissia.domain.account.Account
 import anissia.domain.session.model.SessionItem
 import me.saro.dat.dat.DatCmsManager
 import org.springframework.web.server.ServerWebExchange
@@ -13,13 +12,12 @@ class AsDat {
 
         fun toSession(exchange: ServerWebExchange): SessionItem {
             val ip = exchange.request.remoteAddress?.address?.hostAddress?:"0.0.0.0"
-            val dat = exchange.request.headers.getFirst("dat")
+            val dat: String? = exchange.request.headers.getFirst("dat")
             if (!dat.isNullOrBlank()) {
-                try {
-                    val payload = MANAGER.parse(dat)
+                return MANAGER.parse(dat).map { payload ->
                     val split = SPLITOR.read(payload.plain)
                     if (split.isNotEmpty()) {
-                        return SessionItem(
+                        return@map SessionItem(
                             an = payload.secure.toLong(),
                             email = split[0],
                             name = split[1],
@@ -27,20 +25,15 @@ class AsDat {
                             ip = ip,
                         )
                     }
-                } catch (e: Exception) {
-                    log.info("Dat Error: $dat ${e.message}")
-                    exchange.response.headers.set("Dat-Error", "INVALID")
-                }
-
+                    return@map null
+                }.getOrElse { SessionItem.noLogin(ip) }
             }
-            return SessionItem.cast(Account(), ip)
+            return SessionItem.noLogin(ip)
         }
 
-        fun issue(sessionItem: SessionItem): String = try {
+        fun issue(sessionItem: SessionItem): String {
             val plain = SPLITOR.write(sessionItem.email, sessionItem.name, sessionItem.roles.joinToString(","))
-            MANAGER.issue(plain, sessionItem.an.toString())
-        } catch (e: Exception) {
-            throw SecurityException(e.message)
+            return MANAGER.issue(plain, sessionItem.an.toString()).getOrNull() ?: throw SecurityException("Failed to issue dat")
         }
     }
 }
